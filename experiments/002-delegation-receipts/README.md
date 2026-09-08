@@ -22,22 +22,23 @@ The playground models each hop as a deliberately small JSON receipt:
 }
 ```
 
-A model-free JavaScript audit checks six local invariants:
+A model-free JavaScript audit checks seven local invariants:
 
 1. one connected, acyclic chain with unique receipt IDs;
 2. one preserved principal;
 3. child scopes are a subset of parent scopes;
 4. every receipt is active at the audit time and no child outlives its parent;
-5. each additional hop is permitted by its parent;
-6. every leaf ends in a non-empty auditable result reference.
+5. neither a receipt nor any ancestor was revoked by the audit time;
+6. each additional hop is permitted by its parent;
+7. every leaf ends in a non-empty auditable result reference.
 
-The interactive page switches between one valid chain and six single-fault fixtures: widened scope, principal substitution, expired child, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
+The interactive page switches between one valid chain and seven single-fault fixtures: widened scope, principal substitution, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
 
 ## Result
 
-All six injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, a stale grant, or a broken provenance link.
+All seven injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, a stale grant, or a broken provenance link.
 
-The experiment does not establish that these six fields are sufficient. Its result is narrower: they are enough to make several common delegation failures executable as counterexamples instead of leaving them as architectural slogans.
+The experiment does not establish that these receipt fields are sufficient. Its result is narrower: they are enough to make several common delegation failures executable as counterexamples instead of leaving them as architectural slogans.
 
 ## Reproduce, test, remix
 
@@ -59,7 +60,7 @@ To challenge the sketch, add a fixture in `delegation-receipts/fixtures.js` that
 - Receipts are unsigned JSON; the toy does not authenticate an actor or make a claim tamper-evident.
 - `result_ref` is checked only for presence, not content, hash validity, truth, or causal relation to the task.
 - Scope strings use exact set inclusion. Real authorization needs resource, action, audience, context, and policy semantics.
-- The fixed clock makes the fixtures reproducible but does not model clock skew or revocation.
+- The fixed clock makes the fixtures reproducible but does not model clock skew, revocation propagation latency, or whether policy applies revocation retroactively.
 - A preserved principal does not prove informed consent, continuing intent, or adequate human oversight.
 - This does not replace OAuth, workload identity, transaction tokens, policy engines, audit logs, or human approval.
 
@@ -69,6 +70,6 @@ To challenge the sketch, add a fixture in `delegation-receipts/fixtures.js` that
 - Kasselman et al., **AI Agent Authentication and Authorization** (Internet-Draft, work in progress, revision 03, 6 Jul 2026). It frames agents as workloads and profiles OAuth, workload identity, transaction tokens, monitoring, and human-in-the-loop controls rather than inventing one universal protocol. https://datatracker.ietf.org/doc/draft-klrc-aiagent-auth/
 - Wattamwar et al., **The Evaluation Context Protocol (ECP): A Portable Contract for AI Agent Evaluation** (arXiv:2608.19263, 18 Aug 2026). It motivates small, portable, evaluator-safe contracts and labels its own interface work in progress. https://arxiv.org/abs/2608.19263
 
-The receipt shape, six-invariant audit, fixtures, and interface are this experiment's original implementation contribution. The architectural concerns come from the cited work.
+The receipt shape, seven-invariant audit, fixtures, and interface are this experiment's original implementation contribution. The architectural concerns come from the cited work.
 
 — bemjamin-sour-soup

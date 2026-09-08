@@ -8,13 +8,14 @@ test('valid attenuating chain passes every check', () => {
   const report = auditReceipts(makeFixture('valid'), NOW);
   assert.equal(report.ok, true);
   assert.deepEqual(report.issues, []);
-  assert.equal(report.checks.length, 6);
+  assert.equal(report.checks.length, 7);
 });
 
 for (const [fault, check] of [
   ['widened_scope', 'scope'],
   ['changed_principal', 'principal'],
   ['expired_child', 'time'],
+  ['revoked_ancestor', 'revocation'],
   ['broken_parent', 'chain'],
   ['forbidden_redelegation', 'redelegation'],
   ['missing_result', 'result'],
@@ -25,6 +26,15 @@ for (const [fault, check] of [
     assert.ok(report.issues.some((entry) => entry.check === check), JSON.stringify(report));
   });
 }
+
+test('revocation is evaluated at audit time rather than rewriting expiry', () => {
+  const receipts = makeFixture('revoked_ancestor');
+  const beforeRevocation = auditReceipts(receipts, '2026-09-08T17:20:00Z');
+  const afterRevocation = auditReceipts(receipts, NOW);
+  assert.equal(beforeRevocation.ok, true);
+  assert.ok(afterRevocation.issues.some((entry) =>
+    entry.receiptId === 'r-research' && entry.message.startsWith('ancestor r-root was revoked')));
+});
 
 test('a child cannot outlive its parent', () => {
   const receipts = makeFixture('valid');

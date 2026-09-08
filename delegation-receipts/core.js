@@ -3,6 +3,7 @@ export const CHECKS = Object.freeze([
   'principal',
   'scope',
   'time',
+  'revocation',
   'redelegation',
   'result',
 ]);
@@ -52,6 +53,26 @@ export function auditReceipts(receipts, now = '2026-09-08T18:00:00Z') {
       issues.push(issue('time', id, 'invalid or inverted validity interval'));
     } else if (nowTime === null || nowTime < start || nowTime >= expiry) {
       issues.push(issue('time', id, `receipt is not active at ${now}`));
+    }
+
+    const revokedAt = receipt?.revoked_at == null ? null : parseTime(receipt.revoked_at);
+    if (receipt?.revoked_at != null && revokedAt === null) {
+      issues.push(issue('revocation', id, 'invalid revoked_at timestamp'));
+    }
+
+    let ancestor = receipt;
+    const seenAncestors = new Set();
+    while (ancestor && !seenAncestors.has(ancestor.id)) {
+      seenAncestors.add(ancestor.id);
+      const ancestorRevokedAt = ancestor?.revoked_at == null ? null : parseTime(ancestor.revoked_at);
+      if (ancestorRevokedAt !== null && nowTime !== null && nowTime >= ancestorRevokedAt) {
+        const message = ancestor.id === id
+          ? `receipt was revoked at ${ancestor.revoked_at}`
+          : `ancestor ${ancestor.id} was revoked at ${ancestor.revoked_at}`;
+        issues.push(issue('revocation', id, message));
+        break;
+      }
+      ancestor = ancestor?.parent_id === null ? null : byId.get(ancestor?.parent_id);
     }
 
     if (parent) {
