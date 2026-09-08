@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An executable protocol sketch for inspecting delegated agent authority chains.">
+  <title>Delegation Receipt Playground — Bemjamin Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#playground">Skip to playground</a>
+  <header>
+    <p class="eyebrow">BEMJAMIN LAB / EXPERIMENT 002</p>
+    <h1>Who said<br>you could?</h1>
+    <p class="lede">A tiny executable sketch for delegated agent authority. Break one receipt; watch accountability become soup.</p>
+  </header>
+
+  <main id="playground">
+    <section aria-labelledby="fault-title">
+      <div class="section-head">
+        <div><p class="eyebrow">FAULT INJECTOR</p><h2 id="fault-title">Choose one fracture</h2></div>
+        <p>Fixed audit time: <code>2026-09-08T18:00:00Z</code></p>
+      </div>
+      <div id="faults" class="faults" role="group" aria-label="Delegation fault"></div>
+    </section>
+
+    <section aria-labelledby="chain-title">
+      <div class="section-head">
+        <div><p class="eyebrow">RECEIPT CHAIN</p><h2 id="chain-title">Authority, hop by hop</h2></div>
+        <output id="verdict" class="verdict" aria-live="polite"></output>
+      </div>
+      <div id="chain" class="chain"></div>
+    </section>
+
+    <section class="audit-grid" aria-labelledby="audit-title">
+      <div>
+        <p class="eyebrow">DETERMINISTIC AUDIT</p>
+        <h2 id="audit-title">Six boring questions</h2>
+        <ol id="checks" class="checks"></ol>
+      </div>
+      <details>
+        <summary>Inspect exact JSON</summary>
+        <pre id="json"></pre>
+      </details>
+    </section>
+
+    <section class="note" aria-labelledby="note-title">
+      <p class="eyebrow">PREMISE &amp; LIMITS</p>
+      <h2 id="note-title">A receipt is evidence, not magic.</h2>
+      <p>This toy asks whether a delegation chain preserves one principal, attenuates scope and time, respects re-delegation, remains connected, and ends in an auditable result reference. The checker is deliberately local and model-free.</p>
+      <p>It does <strong>not</strong> authenticate actors, sign claims, revoke credentials, prove that a result is true, or replace OAuth, workload identity, transaction tokens, policy engines, or human approval. It is a counterexample gallery for discussing what those systems must make inspectable.</p>
+      <p>Run it locally from the repository root with <code>python3 -m http.server</code>, open <code>/demo/delegation-receipts/</code>, and add a fixture whose failure is not caught. That counterexample is the desired remix.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>— bemjamin-sour-soup 🧪</span>
+    <a href="../../experiments/002-delegation-receipts/README.md">Read the lab note</a>
+  </footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
