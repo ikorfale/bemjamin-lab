@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Branchpoint report</title>
+<style>
+:root { color-scheme: dark; font-family: ui-monospace, SFMono-Regular, monospace; background:#0d1117; color:#e6edf3 }
+body { max-width:1000px; margin:4rem auto; padding:0 1rem } h1 { font-size:clamp(2rem,7vw,5rem); margin:0 }
+.lede { color:#9da7b3; max-width:70ch } .cards { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:2rem 0 }
+.card,table,details { background:#161b22;border:1px solid #30363d;border-radius:12px } .card { padding:1rem } .card b { display:block;font-size:2rem }
+table { border-collapse:separate;border-spacing:0;width:100%;overflow:hidden } th,td { padding:.8rem;text-align:left;border-bottom:1px solid #30363d } tr:last-child td { border:0 }
+small { display:block;color:#8b949e;margin-top:.25rem } .bar { display:inline-block;width:6rem;height:.55rem;background:#30363d;border-radius:1rem;overflow:hidden } .bar i { display:block;height:100% }
+details { margin-top:1rem;padding:1rem } pre { overflow:auto;color:#b8c4d0 } a {color:#75a7ff} @media(max-width:700px){th:nth-child(3),td:nth-child(3){display:none}}
+</style>
+<body><p>AI AGENT RELIABILITY / OFFLINE REPORT</p><h1>Where did the runs branch?</h1>
+<p class="lede">Branchpoint keeps outcome success separate from tool-composition and ordering consistency. The unstable depth is the first action position whose Shannon entropy is non-zero.</p>
+<section class="cards"><div class="card"><b>2</b> tasks</div><div class="card"><b>8</b> runs</div><div class="card"><b>0.875</b> mean success</div><div class="card"><b>0.608</b> order consistency</div></section>
+<table><thead><tr><th>Task</th><th>Success</th><th>Composition</th><th>Order</th><th>First unstable depth</th><th>Peak entropy</th></tr></thead><tbody><tr><td><strong>calendar-cleanup</strong><small>3/4 passed</small></td><td><span class="bar"><i style="width:75.0%;background:#61d095"></i></span> 0.750</td><td><span class="bar"><i style="width:62.2%;background:#75a7ff"></i></span> 0.622</td><td><span class="bar"><i style="width:55.0%;background:#ffb86b"></i></span> 0.550</td><td>1</td><td>1.500</td></tr><tr><td><strong>invoice-check</strong><small>4/4 passed</small></td><td><span class="bar"><i style="width:100.0%;background:#61d095"></i></span> 1.000</td><td><span class="bar"><i style="width:100.0%;background:#75a7ff"></i></span> 1.000</td><td><span class="bar"><i style="width:66.7%;background:#ffb86b"></i></span> 0.667</td><td>0</td><td>0.811</td></tr></tbody></table>
+<details><summary>Machine-readable report</summary><pre>{
+  &quot;schema&quot;: &quot;branchpoint-report/0.1&quot;,
+  &quot;tasks&quot;: [
+    {
+      &quot;task_id&quot;: &quot;calendar-cleanup&quot;,
+      &quot;runs&quot;: 4,
+      &quot;successes&quot;: 3,
+      &quot;success_rate&quot;: 0.75,
+      &quot;pass_power&quot;: {
+        &quot;1&quot;: 0.75,
+        &quot;2&quot;: 0.5,
+        &quot;4&quot;: 0.0,
+        &quot;8&quot;: null
+      },
+      &quot;composition_consistency&quot;: 0.622222,
+      &quot;order_consistency&quot;: 0.55,
+      &quot;first_unstable_depth&quot;: 1,
+      &quot;peak_entropy_bits&quot;: 1.5,
+      &quot;depth_entropy&quot;: [
+        {
+          &quot;depth&quot;: 0,
+          &quot;entropy_bits&quot;: -0.0,
+          &quot;choices&quot;: {
+            &quot;list_events&quot;: 4
+          }
+        },
+        {
+          &quot;depth&quot;: 1,
+          &quot;entropy_bits&quot;: 0.811278,
+          &quot;choices&quot;: {
+            &quot;inspect_event&quot;: 3,
+            &quot;list_events&quot;: 1
+          }
+        },
+        {
+          &quot;depth&quot;: 2,
+          &quot;entropy_bits&quot;: 1.5,
+          &quot;choices&quot;: {
+            &quot;delete_duplicate&quot;: 2,
+            &quot;inspect_event&quot;: 1,
+            &quot;verify_calendar&quot;: 1
+          }
+        },
+        {
+          &quot;depth&quot;: 3,
+          &quot;entropy_bits&quot;: 1.5,
+          &quot;choices&quot;: {
+            &quot;&lt;STOP&gt;&quot;: 1,
+            &quot;delete_duplicate&quot;: 1,
+            &quot;verify_calendar&quot;: 2
+          }
+        },
+        {
+          &quot;depth&quot;: 4,
+          &quot;entropy_bits&quot;: 0.811278,
+          &quot;choices&quot;: {
+            &quot;&lt;STOP&gt;&quot;: 3,
+            &quot;verify_calendar&quot;: 1
+          }
+        },
+        {
+          &quot;depth&quot;: 5,
+          &quot;entropy_bits&quot;: -0.0,
+          &quot;choices&quot;: {
+            &quot;&lt;STOP&gt;&quot;: 4
+          }
+        }
+      ]
+    },
+    {
+      &quot;task_id&quot;: &quot;invoice-check&quot;,
+      &quot;runs&quot;: 4,
+      &quot;successes&quot;: 4,
+      &quot;success_rate&quot;: 1.0,
+      &quot;pass_power&quot;: {
+        &quot;1&quot;: 1.0,
+        &quot;2&quot;: 1.0,
+        &quot;4&quot;: 1.0,
+        &quot;8&quot;: null
+      },
+      &quot;composition_consistency&quot;: 1.0,
+      &quot;order_consistency&quot;: 0.666667,
+      &quot;first_unstable_depth&quot;: 0,
+      &quot;peak_entropy_bits&quot;: 0.811278,
+      &quot;depth_entropy&quot;: [
+        {
+          &quot;depth&quot;: 0,
+          &quot;entropy_bits&quot;: 0.811278,
+          &quot;choices&quot;: {
+            &quot;lookup_vendor&quot;: 1,
+            &quot;read_invoice&quot;: 3
+          }
+        },
+        {
+          &quot;depth&quot;: 1,
+          &quot;entropy_bits&quot;: 0.811278,
+          &quot;choices&quot;: {
+            &quot;lookup_vendor&quot;: 3,
+            &quot;read_invoice&quot;: 1
+          }
+        },
+        {
+          &quot;depth&quot;: 2,
+          &quot;entropy_bits&quot;: -0.0,
+          &quot;choices&quot;: {
+            &quot;compare_total&quot;: 4
+          }
+        },
+        {
+          &quot;depth&quot;: 3,
+          &quot;entropy_bits&quot;: -0.0,
+          &quot;choices&quot;: {
+            &quot;&lt;STOP&gt;&quot;: 4
+          }
+        }
+      ]
+    }
+  ],
+  &quot;summary&quot;: {
+    &quot;task_count&quot;: 2,
+    &quot;run_count&quot;: 8,
+    &quot;mean_success_rate&quot;: 0.875,
+    &quot;mean_composition_consistency&quot;: 0.811111,
+    &quot;mean_order_consistency&quot;: 0.608334
+  }
+}</pre></details>
+<p class="lede">Generated by <a href="https://github.com/ikorfale/bemjamin-lab">Branchpoint</a>. No model or network call was used.</p></body></html>

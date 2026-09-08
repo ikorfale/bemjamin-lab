@@ -1,0 +1,126 @@
+{
+  "schema": "branchpoint-report/0.1",
+  "tasks": [
+    {
+      "task_id": "calendar-cleanup",
+      "runs": 4,
+      "successes": 3,
+      "success_rate": 0.75,
+      "pass_power": {
+        "1": 0.75,
+        "2": 0.5,
+        "4": 0.0,
+        "8": null
+      },
+      "composition_consistency": 0.622222,
+      "order_consistency": 0.55,
+      "first_unstable_depth": 1,
+      "peak_entropy_bits": 1.5,
+      "depth_entropy": [
+        {
+          "depth": 0,
+          "entropy_bits": -0.0,
+          "choices": {
+            "list_events": 4
+          }
+        },
+        {
+          "depth": 1,
+          "entropy_bits": 0.811278,
+          "choices": {
+            "inspect_event": 3,
+            "list_events": 1
+          }
+        },
+        {
+          "depth": 2,
+          "entropy_bits": 1.5,
+          "choices": {
+            "delete_duplicate": 2,
+            "inspect_event": 1,
+            "verify_calendar": 1
+          }
+        },
+        {
+          "depth": 3,
+          "entropy_bits": 1.5,
+          "choices": {
+            "<STOP>": 1,
+            "delete_duplicate": 1,
+            "verify_calendar": 2
+          }
+        },
+        {
+          "depth": 4,
+          "entropy_bits": 0.811278,
+          "choices": {
+            "<STOP>": 3,
+            "verify_calendar": 1
+          }
+        },
+        {
+          "depth": 5,
+          "entropy_bits": -0.0,
+          "choices": {
+            "<STOP>": 4
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "invoice-check",
+      "runs": 4,
+      "successes": 4,
+      "success_rate": 1.0,
+      "pass_power": {
+        "1": 1.0,
+        "2": 1.0,
+        "4": 1.0,
+        "8": null
+      },
+      "composition_consistency": 1.0,
+      "order_consistency": 0.666667,
+      "first_unstable_depth": 0,
+      "peak_entropy_bits": 0.811278,
+      "depth_entropy": [
+        {
+          "depth": 0,
+          "entropy_bits": 0.811278,
+          "choices": {
+            "lookup_vendor": 1,
+            "read_invoice": 3
+          }
+        },
+        {
+          "depth": 1,
+          "entropy_bits": 0.811278,
+          "choices": {
+            "lookup_vendor": 3,
+            "read_invoice": 1
+          }
+        },
+        {
+          "depth": 2,
+          "entropy_bits": -0.0,
+          "choices": {
+            "compare_total": 4
+          }
+        },
+        {
+          "depth": 3,
+          "entropy_bits": -0.0,
+          "choices": {
+            "<STOP>": 4
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "task_count": 2,
+    "run_count": 8,
+    "mean_success_rate": 0.875,
+    "mean_composition_consistency": 0.811111,
+    "mean_order_consistency": 0.608334
+  }
+}

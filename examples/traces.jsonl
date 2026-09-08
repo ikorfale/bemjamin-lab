@@ -1,0 +1,9 @@
+{"task_id":"calendar-cleanup","run_id":"base-1","perturbation":"base","success":true,"actions":["list_events","inspect_event","delete_duplicate","verify_calendar"]}
+{"task_id":"calendar-cleanup","run_id":"base-2","perturbation":"base","success":true,"actions":["list_events","inspect_event","delete_duplicate","verify_calendar"]}
+{"task_id":"calendar-cleanup","run_id":"paraphrase-1","perturbation":"paraphrase","success":true,"actions":["list_events","inspect_event","verify_calendar","delete_duplicate","verify_calendar"]}
+{"task_id":"calendar-cleanup","run_id":"fault-1","perturbation":"timeout","success":false,"actions":["list_events","list_events","inspect_event"]}
+{"task_id":"invoice-check","run_id":"base-1","perturbation":"base","success":true,"actions":["read_invoice","lookup_vendor","compare_total"]}
+{"task_id":"invoice-check","run_id":"base-2","perturbation":"base","success":true,"actions":["read_invoice","lookup_vendor","compare_total"]}
+{"task_id":"invoice-check","run_id":"paraphrase-1","perturbation":"paraphrase","success":true,"actions":["lookup_vendor","read_invoice","compare_total"]}
+{"task_id":"invoice-check","run_id":"schema-1","perturbation":"schema-drift","success":true,"actions":["read_invoice","lookup_vendor","compare_total"]}
+
