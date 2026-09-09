@@ -41,13 +41,14 @@ A clean run must:
 1. pass the valid-testimony control;
 2. distinguish expired, forged, replayed, conflicting, and insufficient-quorum cases;
 3. reject impossible/non-canonical timestamps;
-4. produce `NONE / CONFLICT:node-0` for fail-closed and `mirror-a / QUORUM` for skip-conflict on the same signed evidence;
-5. keep every Policy Fork Explorer decision identical to the signed comparator across its complete bounded state space.
+4. survive the process-boundary sequence `accept(4) → persist → restart → reject(4) → accept(5)`;
+5. produce `NONE / CONFLICT:node-0` for fail-closed and `mirror-a / QUORUM` for skip-conflict on the same signed evidence;
+6. keep every Policy Fork Explorer decision identical to the signed comparator across its complete bounded state space.
 
 ## Limits
 
 - Test keys are generated in memory; fixtures test decisions, not stable signature bytes.
-- `lastSeen` persistence and atomic advancement are caller-owned and are not implemented here; `REPLAY` means “not newer than the supplied persisted snapshot.”
+- `replay-store.js` demonstrates one local file-backed process boundary using write → file fsync → rename → directory fsync. It does not provide multi-writer locking, remote-store consensus, filesystem-independent crash guarantees, or protection against rollback/deletion of the state file.
 - 2-of-3 is a fixture policy, not a universal quorum recommendation.
 - Two colluding observers, clock compromise, key rotation/revocation, operator/provider correlation, and network measurement remain out of scope.
 

@@ -1,0 +1,51 @@
+{
+  "schema": "checkpoint-tail-comparator/1",
+  "report": {
+    "equivalent": {
+      "verdict": "EQUIVALENT",
+      "reason": "SAME_HISTORY",
+      "evidence": []
+    },
+    "left_extends": {
+      "verdict": "USE_LEFT",
+      "reason": "LEFT_STRICTLY_EXTENDS_RIGHT",
+      "evidence": [
+        {
+          "additional_records": 1
+        }
+      ]
+    },
+    "right_extends": {
+      "verdict": "USE_RIGHT",
+      "reason": "RIGHT_STRICTLY_EXTENDS_LEFT",
+      "evidence": [
+        {
+          "additional_records": 1
+        }
+      ]
+    },
+    "diverged": {
+      "verdict": "REFUSE",
+      "reason": "DIVERGED",
+      "evidence": [
+        {
+          "seq": 43,
+          "left_sha256": "1f32ffe8947a67e8bef3af2a99ea5d7a8f3666a33189ef59b5cdced8f75f27fc",
+          "right_sha256": "7bd52cab84b5c87e94f6e94472bfb0d7cf771ed508e4f63342d294c19161b32f"
+        }
+      ]
+    },
+    "broken_link": {
+      "verdict": "REFUSE",
+      "reason": "INVALID_TAIL",
+      "evidence": [
+        "LEFT:TAIL[2]:PREV_DIGEST"
+      ]
+    },
+    "checkpoint_mismatch": {
+      "verdict": "REFUSE",
+      "reason": "CHECKPOINT_MISMATCH",
+      "evidence": []
+    }
+  }
+}
