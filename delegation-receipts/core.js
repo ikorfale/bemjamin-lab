@@ -221,3 +221,102 @@ export async function auditReceiptsWithArtifacts(
     issues,
   };
 }
+
+export async function auditAndConsumeArtifacts(
+  receipts,
+  now = '2026-09-08T18:00:00Z',
+  resolveArtifact = async () => undefined,
+  consumptionMode = 'VERIFIED_BUFFER',
+) {
+  if (!['VERIFIED_BUFFER', 'REFRESH_AND_REVERIFY'].includes(consumptionMode)) {
+    throw new TypeError(`unsupported consumption mode: ${consumptionMode}`);
+  }
+
+  const report = auditReceipts(receipts, now);
+  if (!report.ok) return { ...report, artifacts: [] };
+
+  const receiptList = Array.isArray(receipts) ? receipts : [];
+  const leaves = receiptList.filter((candidate) =>
+    !receiptList.some((other) => other?.parent_id === candidate?.id));
+  const issues = [];
+  const artifacts = [];
+
+  for (const leaf of leaves) {
+    const id = leaf?.id || '<missing-id>';
+    let auditValue;
+    try {
+      auditValue = await resolveArtifact(leaf.result_locator);
+    } catch {
+      auditValue = undefined;
+    }
+    const auditBytes = asBytes(auditValue);
+    if (!auditBytes) {
+      issues.push(resultIssue(id, 'RESULT_UNAVAILABLE', `artifact unavailable at ${leaf.result_locator}`));
+      continue;
+    }
+
+    const auditDigest = await sha256Hex(auditBytes);
+    if (auditDigest !== leaf.result_sha256) {
+      issues.push(resultIssue(id, 'RESULT_DIGEST_MISMATCH', `artifact digest mismatch at ${leaf.result_locator}`));
+      continue;
+    }
+
+    let consumedBytes = auditBytes;
+    let consumedDigest = auditDigest;
+    let consumed = true;
+
+    if (consumptionMode === 'REFRESH_AND_REVERIFY') {
+      let consumedValue;
+      try {
+        consumedValue = await resolveArtifact(leaf.result_locator);
+      } catch {
+        consumedValue = undefined;
+      }
+      const refreshedBytes = asBytes(consumedValue);
+      if (!refreshedBytes) {
+        issues.push(resultIssue(
+          id,
+          'RESULT_UNAVAILABLE_AT_CONSUMPTION',
+          `artifact unavailable when consumed at ${leaf.result_locator}`,
+        ));
+        consumedBytes = null;
+        consumedDigest = null;
+        consumed = false;
+      } else {
+        consumedDigest = await sha256Hex(refreshedBytes);
+        if (consumedDigest !== auditDigest) {
+          issues.push(resultIssue(
+            id,
+            'RESULT_CHANGED_SINCE_AUDIT',
+            `artifact changed since audit at ${leaf.result_locator}`,
+          ));
+          consumedBytes = null;
+          consumed = false;
+        } else {
+          consumedBytes = refreshedBytes;
+        }
+      }
+    }
+
+    artifacts.push({
+      receiptId: id,
+      locator: leaf.result_locator,
+      audit_snapshot_digest: auditDigest,
+      consumption_mode: consumptionMode,
+      consumed_digest: consumedDigest,
+      consumed,
+      bytes: consumedBytes,
+    });
+  }
+
+  const allIssues = [...report.issues, ...issues];
+  return {
+    ...report,
+    ok: allIssues.length === 0,
+    checks: report.checks.map((check) => check.name === 'result'
+      ? { ...check, ok: !allIssues.some((entry) => entry.check === 'result') }
+      : check),
+    issues: allIssues,
+    artifacts,
+  };
+}

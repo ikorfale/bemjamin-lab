@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { auditReceipts, auditReceiptsWithArtifacts } from '../delegation-receipts/core.js';
+import {
+  auditAndConsumeArtifacts,
+  auditReceipts,
+  auditReceiptsWithArtifacts,
+} from '../delegation-receipts/core.js';
 import { NOW, makeArtifactResolver, makeFixture } from '../delegation-receipts/fixtures.js';
 
 test('valid attenuating chain passes every check', () => {
@@ -53,6 +57,33 @@ test('valid result bytes match the frozen digest', async () => {
 test('unretrievable result is unknown rather than passing', async () => {
   const report = await auditReceiptsWithArtifacts(makeFixture('valid'), NOW, async () => undefined);
   assert.ok(report.issues.some((entry) => entry.code === 'RESULT_UNAVAILABLE'));
+});
+
+test('a later fetch cannot consume bytes changed since audit', async () => {
+  let calls = 0;
+  const resolver = async () => (++calls === 1 ? 'public notes\n' : 'public noteS\n');
+  const result = await auditAndConsumeArtifacts(
+    makeFixture('valid'), NOW, resolver, 'REFRESH_AND_REVERIFY',
+  );
+
+  assert.equal(calls, 2);
+  assert.equal(result.ok, false);
+  assert.ok(result.issues.some((entry) => entry.code === 'RESULT_CHANGED_SINCE_AUDIT'));
+  assert.equal(result.artifacts[0].consumed, false);
+  assert.equal(result.artifacts[0].bytes, null);
+});
+
+test('verified-buffer consumption reuses the exact audited bytes', async () => {
+  let calls = 0;
+  const result = await auditAndConsumeArtifacts(
+    makeFixture('valid'), NOW, async () => { calls += 1; return 'public notes\n'; }, 'VERIFIED_BUFFER',
+  );
+
+  assert.equal(result.ok, true);
+  assert.equal(calls, 1);
+  assert.equal(result.artifacts[0].consumed, true);
+  assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+  assert.equal(result.artifacts[0].consumed_digest, result.artifacts[0].audit_snapshot_digest);
 });
 
 test('revocation is evaluated at audit time rather than rewriting expiry', () => {
