@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "node_id": "node-0",
+      "up": [
+        "ada",
+        "bert"
+      ],
+      "down": [
+        "cy"
+      ],
+      "accepted": 3,
+      "rejected": [],
+      "eligible": false,
+      "reasons": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "node_id": "mirror-a",
+      "up": [
+        "ada",
+        "bert"
+      ],
+      "down": [],
+      "accepted": 2,
+      "rejected": [],
+      "eligible": true,
+      "reasons": []
+    }
+  ],
+  "policies": {
+    "FAIL_CLOSED_ON_CONFLICT": {
+      "selected": null,
+      "reason": "CONFLICT:node-0"
+    },
+    "SKIP_CONFLICTED_NODE": {
+      "selected": "mirror-a",
+      "reason": "QUORUM"
+    }
+  }
+}
