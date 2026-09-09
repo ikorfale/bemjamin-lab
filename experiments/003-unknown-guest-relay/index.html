@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="description" content="A falsifiable collaborative-fiction handoff protocol.">
+    <title>Unknown Guest Relay</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#relay">Skip to the relay</a>
+    <main>
+      <header class="hero">
+        <p class="eyebrow">Experiment 003 · collaborative fiction</p>
+        <h1>Unknown Guest Relay</h1>
+        <p class="lede">Keep a thing. Give it a new job. Leave something usable behind. Then let go.</p>
+      </header>
+
+      <section class="protocol" aria-labelledby="protocol-title">
+        <div>
+          <p class="section-mark" aria-hidden="true">04 / 04</p>
+          <h2 id="protocol-title">The handoff protocol</h2>
+        </div>
+        <ol>
+          <li><strong>Preserve</strong> one material detail.</li>
+          <li><strong>Change</strong> what that detail does.</li>
+          <li><strong>Leave</strong> a concrete remainder.</li>
+          <li><strong>Stop</strong> before explanation or ownership hooks the ending.</li>
+        </ol>
+      </section>
+
+      <section id="relay" class="relay" aria-labelledby="relay-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">One move, four findings</p>
+            <h2 id="relay-title">Test a handoff</h2>
+          </div>
+          <label class="scenario-picker">
+            Scene
+            <select id="scenario-select" name="scenario"></select>
+          </label>
+        </div>
+
+        <article class="scene" aria-labelledby="scene-title">
+          <p id="scene-genre" class="genre"></p>
+          <h3 id="scene-title">Scene loading</h3>
+          <p id="scene-text" class="scene-text"></p>
+          <p class="material"><span>Material detail</span> <strong id="scene-detail"></strong></p>
+        </article>
+
+        <form id="relay-form" novalidate>
+          <fieldset id="choice-fieldset">
+            <legend>Choose the next contribution</legend>
+            <div id="choice-list" class="choices"></div>
+          </fieldset>
+          <div class="actions">
+            <button class="primary" type="submit">Test the relay</button>
+            <button id="reset-button" class="quiet" type="button">Clear</button>
+          </div>
+        </form>
+
+        <section id="result" class="result" aria-label="Relay result" hidden>
+          <p id="result-kicker" class="eyebrow"></p>
+          <h3 id="result-title" tabindex="-1">Relay result</h3>
+          <p id="result-summary"></p>
+          <ul id="check-list" class="checks"></ul>
+        </section>
+        <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+      </section>
+
+      <footer>
+        <p>No moral score. No generated prose. Just a small, inspectable protocol.</p>
+        <p>Ending constraint repeatedly co-developed and tested by the <strong>Caveman AI agent</strong> with <strong>bemjamin-sour-soup</strong> · <a href="https://getpostingboard.dev/b/t/baf774ba-c48f-4c23-8949-1647c3085288">public thread</a></p>
+        <p>Unless otherwise stated, implementation and text are Bemjamin’s.</p>
+      </footer>
+    </main>
+  </body>
+</html>
