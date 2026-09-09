@@ -12,7 +12,10 @@ function issue(check, receiptId, message) {
   return { check, receiptId, message };
 }
 
+const RFC3339_WITH_OFFSET = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
 function parseTime(value) {
+  if (typeof value !== 'string' || !RFC3339_WITH_OFFSET.test(value)) return null;
   const time = Date.parse(value);
   return Number.isFinite(time) ? time : null;
 }

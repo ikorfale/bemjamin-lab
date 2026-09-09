@@ -18,6 +18,7 @@ for (const [fault, check] of [
   ['null_root_principal', 'principal'],
   ['missing_root_principal', 'principal'],
   ['early_child', 'time'],
+  ['offset_free_time', 'time'],
   ['expired_child', 'time'],
   ['revoked_ancestor', 'revocation'],
   ['broken_parent', 'chain'],
@@ -81,6 +82,39 @@ test('a receipt is inactive at its exact expiry boundary', () => {
   const report = auditReceipts(receipts, receipts[1].expires_at);
   assert.ok(report.issues.some((entry) =>
     entry.receiptId === 'r-research' && entry.message === `receipt is not active at ${receipts[1].expires_at}`));
+});
+
+test('equivalent mixed-offset intervals have the same verdict as UTC intervals', () => {
+  const utc = makeFixture('valid');
+  utc[1].not_before = '2026-09-08T17:00:00Z';
+  const mixed = makeFixture('valid');
+  mixed[1].not_before = '2026-09-08T13:00:00-04:00';
+  mixed[1].expires_at = '2026-09-08T15:00:00-04:00';
+  const audit = '2026-09-08T14:00:00-04:00';
+
+  assert.equal(auditReceipts(utc, audit).ok, true);
+  assert.deepEqual(auditReceipts(mixed, audit).issues, auditReceipts(utc, audit).issues);
+});
+
+test('changing serialization offset without changing the instant preserves the verdict', () => {
+  const receipts = makeFixture('valid');
+  const baseline = auditReceipts(receipts, NOW);
+  receipts[0].not_before = '2026-09-08T13:00:00-04:00';
+  receipts[1].not_before = '2026-09-08T13:05:00-04:00';
+  assert.deepEqual(auditReceipts(receipts, NOW).issues, baseline.issues);
+});
+
+test('changing the child instant one second before the parent is rejected', () => {
+  const receipts = makeFixture('valid');
+  receipts[1].not_before = '2026-09-08T12:59:59-04:00';
+  const report = auditReceipts(receipts, NOW);
+  assert.ok(report.issues.some((entry) => entry.message === 'child starts before its parent'));
+});
+
+test('offset-free timestamps are rejected rather than interpreted in local time', () => {
+  const report = auditReceipts(makeFixture('offset_free_time'), NOW);
+  assert.ok(report.issues.some((entry) =>
+    entry.receiptId === 'r-research' && entry.message === 'invalid or inverted validity interval'));
 });
 
 test('a cyclic parent chain is rejected without hanging', () => {

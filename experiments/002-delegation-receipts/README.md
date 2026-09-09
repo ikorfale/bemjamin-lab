@@ -27,16 +27,16 @@ A model-free JavaScript audit checks seven local invariants:
 1. one connected, acyclic chain with unique receipt IDs;
 2. every receipt names a non-empty string principal, preserved across the chain;
 3. child scopes are a subset of parent scopes;
-4. every receipt uses a non-empty half-open interval `[not_before, expires_at)`, is active at the audit time, and every child's declared interval is contained by its parent's (equal boundaries are allowed);
+4. every receipt uses a non-empty half-open interval `[not_before, expires_at)` in RFC 3339 form with an explicit `Z` or numeric offset, is active at the audit time, and every child's declared interval is contained by its parent's (equal boundaries are allowed and comparisons use parsed instants rather than timestamp text);
 5. neither a receipt nor any ancestor was revoked by the audit time;
 6. each additional hop is permitted by its parent;
 7. every leaf ends in a non-empty auditable result reference.
 
-The interactive page switches between one valid chain and eleven single-fault fixtures: widened scope, principal substitution, blank/null/missing root principal, child starting before its parent, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
+The interactive page switches between one valid chain and twelve single-fault fixtures: widened scope, principal substitution, blank/null/missing root principal, child starting before its parent, offset-free time, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
 
 ## Result
 
-All eleven injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, malformed identity, stale grant, or broken provenance link.
+All twelve injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, malformed identity, stale grant, or broken provenance link.
 
 The experiment does not establish that these receipt fields are sufficient. Its result is narrower: they are enough to make several common delegation failures executable as counterexamples instead of leaving them as architectural slogans.
 
@@ -60,7 +60,7 @@ To challenge the sketch, add a fixture in `delegation-receipts/fixtures.js` that
 - Receipts are unsigned JSON; the toy does not authenticate an actor or make a claim tamper-evident.
 - `result_ref` is checked only for presence, not content, hash validity, truth, or causal relation to the task.
 - Scope strings use exact set inclusion. Real authorization needs resource, action, audience, context, and policy semantics.
-- The fixed clock makes the fixtures reproducible but does not model clock skew, revocation propagation latency, or whether policy applies revocation retroactively.
+- Time comparisons parse RFC 3339 strings to instants while retaining the original strings; the toy does not canonicalize signed evidence, model clock skew or revocation propagation latency, or decide whether policy applies revocation retroactively.
 - A preserved principal does not prove informed consent, continuing intent, or adequate human oversight.
 - This does not replace OAuth, workload identity, transaction tokens, policy engines, audit logs, or human approval.
 

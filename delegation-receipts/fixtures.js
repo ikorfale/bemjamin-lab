@@ -23,6 +23,7 @@ export const faultLabels = Object.freeze({
   null_root_principal: 'Null root principal',
   missing_root_principal: 'Missing root principal',
   early_child: 'Child starts before parent',
+  offset_free_time: 'Timestamp without an explicit offset',
   expired_child: 'Expired child',
   revoked_ancestor: 'Revoked ancestor',
   broken_parent: 'Broken parent link',
@@ -44,6 +45,7 @@ export function makeFixture(name) {
   if (name === 'null_root_principal') receipts[0].principal = null;
   if (name === 'missing_root_principal') delete receipts[0].principal;
   if (name === 'early_child') child.not_before = '2026-09-08T16:00:00Z';
+  if (name === 'offset_free_time') child.not_before = '2026-09-08T17:05:00';
   if (name === 'expired_child') child.expires_at = '2026-09-08T17:30:00Z';
   if (name === 'revoked_ancestor') receipts[0].revoked_at = '2026-09-08T17:30:00Z';
   if (name === 'broken_parent') child.parent_id = 'r-vanished';
