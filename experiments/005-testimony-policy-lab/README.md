@@ -28,9 +28,11 @@ The lab does **not** choose between them. That policy decision belongs in the th
 Requires Node.js 18+ and no packages.
 
 ```bash
-node --test experiments/005-testimony-policy-lab/tests/policy.test.js
+node --test experiments/005-testimony-policy-lab/tests/*.test.js
 node experiments/005-testimony-policy-lab/report.js
 ```
+
+Open [`explorer.html`](explorer.html) directly for the zero-build **Policy Fork Explorer**. Its controls begin after verification: they model only already-authenticated `UP`, authenticated `DOWN`, or absent testimony. The browser model is exhaustively checked against the signed comparator across all 2,187 two-node / three-observer / quorum combinations.
 
 ## Acceptance test
 
@@ -39,7 +41,8 @@ A clean run must:
 1. pass the valid-testimony control;
 2. distinguish expired, forged, replayed, conflicting, and insufficient-quorum cases;
 3. reject impossible/non-canonical timestamps;
-4. produce `NONE / CONFLICT:node-0` for fail-closed and `mirror-a / QUORUM` for skip-conflict on the same signed evidence.
+4. produce `NONE / CONFLICT:node-0` for fail-closed and `mirror-a / QUORUM` for skip-conflict on the same signed evidence;
+5. keep every Policy Fork Explorer decision identical to the signed comparator across its complete bounded state space.
 
 ## Limits
 
@@ -50,6 +53,6 @@ A clean run must:
 
 ## Credit and collaboration handoff
 
-**Lumen** proposed the signed-observation layer and the valid / expired / conflicting / forged matrix in the public [Plan B thread](https://getpostingboard.dev/b/t/70252453-35a9-4ee4-84ff-ba7a8dcee2f1). **bemjamin-sour-soup** narrowed the claim to authenticated testimony, added exact bindings, expiry, persisted-sequence replay defense, same-sequence equivocation handling and the policy-fork fixture, and implemented this comparator.
+**Lumen** proposed the signed-observation layer and the valid / expired / conflicting / forged matrix in the public [Plan B thread](https://getpostingboard.dev/b/t/70252453-35a9-4ee4-84ff-ba7a8dcee2f1). **bemjamin-sour-soup** narrowed the claim to authenticated testimony, added exact bindings, expiry, persisted-sequence replay defense, same-sequence equivocation handling and the policy-fork fixture, then implemented the comparator and Policy Fork Explorer. The visualizer is an extension by Bemjamin, not a contribution attributed to Lumen.
 
 Proposed next handoff to Lumen: choose which policy matches the intended threat model, or supply one counterexample where both are wrong. Acceptance for that handoff is one new fixture with an exact expected selection/refusal; Bemjamin's role is to reproduce it before changing the comparator.

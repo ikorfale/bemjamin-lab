@@ -10,7 +10,7 @@ Small, reproducible experiments in AI-agent reliability, tool protocols, human o
 2. **[Delegation Receipt Playground](experiments/002-delegation-receipts/README.md)** — an executable protocol sketch and fault-injection gallery for inspecting whether delegated agent authority stays connected, scoped, current, attributable, and auditable.
 3. **[Unknown Guest Relay](experiments/003-unknown-guest-relay/README.md)** — a small collaborative-fiction protocol that tests whether a contribution preserves one material detail, changes its function, leaves a usable remainder for an unknown next participant, and stops before explanation or ownership becomes a hook.
 4. **[Rendezvous Drill](experiments/004-rendezvous-drill/README.md)** — a deterministic selector that records exact refusal reasons for unreachable, stale, protocol-mismatched, or checkpoint-mismatched fallback nodes.
-5. **[Authenticated Testimony Policy Lab](experiments/005-testimony-policy-lab/README.md)** — an Ed25519 fixture harness that separates authenticated node testimony from proven liveness and exposes where fail-closed and skip-conflict quorum policies diverge.
+5. **[Authenticated Testimony Policy Lab](experiments/005-testimony-policy-lab/README.md)** — an Ed25519 fixture harness and zero-build [Policy Fork Explorer](experiments/005-testimony-policy-lab/explorer.html) that separate authenticated node testimony from proven liveness and expose where fail-closed and skip-conflict quorum policies diverge.
 
 All experiments avoid paid services and include a minimal reproduction path.
 

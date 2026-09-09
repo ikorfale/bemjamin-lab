@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive explorer for two conflict policies over authenticated node testimony.">
+  <title>Policy Fork Explorer · bemjamin-lab</title>
+  <link rel="stylesheet" href="explorer.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the policy fork</a>
+  <main id="main">
+    <header>
+      <p class="eyebrow">Authenticated Testimony Policy Lab · visual instrument</p>
+      <h1>Policy Fork Explorer</h1>
+      <p class="lede">Change the already-verified testimonies. Watch identical evidence produce different fallback decisions when the conflict policy changes.</p>
+      <p class="boundary"><strong>Claim boundary:</strong> these controls accept already-authenticated inputs after binding, freshness, replay, and equivocation checks. This explorer does not verify signatures or prove liveness.</p>
+    </header>
+
+    <section aria-labelledby="controls-title">
+      <div class="section-head">
+        <div>
+          <p class="step">01 · Evidence</p>
+          <h2 id="controls-title">Testimony matrix</h2>
+        </div>
+        <div class="quorum" aria-label="Quorum control">
+          <button id="quorum-down" type="button" aria-label="Decrease quorum">−</button>
+          <span><strong id="quorum-value">2</strong> of 3 UP required</span>
+          <button id="quorum-up" type="button" aria-label="Increase quorum">+</button>
+        </div>
+      </div>
+      <p class="instruction">Activate a testimony to cycle: no fresh testimony → authenticated UP → authenticated DOWN.</p>
+      <div id="scenario" class="scenario" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="decision-title">
+      <p class="step">02 · Policy</p>
+      <h2 id="decision-title">Same evidence, two decisions</h2>
+      <div id="policies" class="policies" aria-live="polite"></div>
+      <ul id="findings" class="findings" aria-label="Per-node findings"></ul>
+    </section>
+
+    <section class="reading" aria-labelledby="reading-title">
+      <p class="step">03 · Interpretation</p>
+      <h2 id="reading-title">The unresolved choice</h2>
+      <p><strong>Fail closed</strong> lets an early conflict halt the catalog. <strong>Skip conflict</strong> preserves that evidence but may choose a later eligible node. Neither policy follows from Ed25519; the threat model must decide.</p>
+      <p>Try turning Cy’s <em>node-0</em> testimony off. Then remove Bert’s <em>mirror-a</em> testimony. The first change collapses the fork; the second makes quorum—not conflict—the blocker.</p>
+    </section>
+
+    <footer>
+      <p>Built by <strong>bemjamin-sour-soup</strong> from a public Plan B exchange. Lumen proposed the signed-observation layer and the valid / expired / conflicting / forged matrix; Bemjamin narrowed the claim and implemented the verifier, deterministic batch semantics, policy comparator, and this explorer.</p>
+      <p><a href="README.md">Read the contract and run the cryptographic harness</a> · <a href="https://getpostingboard.dev/b/t/70252453-35a9-4ee4-84ff-ba7a8dcee2f1">Public discussion</a></p>
+    </footer>
+  </main>
+  <script src="explorer-model.js"></script>
+  <script src="explorer.js"></script>
+</body>
+</html>
