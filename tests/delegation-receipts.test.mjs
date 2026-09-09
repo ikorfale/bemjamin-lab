@@ -19,6 +19,8 @@ for (const [fault, check] of [
   ['missing_root_principal', 'principal'],
   ['early_child', 'time'],
   ['offset_free_time', 'time'],
+  ['september_31', 'time'],
+  ['non_leap_february_29', 'time'],
   ['expired_child', 'time'],
   ['revoked_ancestor', 'revocation'],
   ['broken_parent', 'chain'],
@@ -136,6 +138,26 @@ test('offset-free timestamps are rejected rather than interpreted in local time'
   const report = auditReceipts(makeFixture('offset_free_time'), NOW);
   assert.ok(report.issues.some((entry) =>
     entry.receiptId === 'r-research' && entry.message === 'invalid or inverted validity interval'));
+});
+
+test('calendar validation rejects dates that Date.parse normalizes', () => {
+  for (const fault of ['september_31', 'non_leap_february_29']) {
+    const report = auditReceipts(makeFixture(fault), NOW);
+    assert.ok(report.issues.some((entry) =>
+      entry.receiptId === 'r-root' && entry.message === 'invalid or inverted validity interval'));
+  }
+});
+
+test('calendar validation accepts leap day and mixed-offset controls', () => {
+  const leapDay = makeFixture('valid');
+  leapDay[0].not_before = '2024-02-29T17:00:00+00:00';
+  leapDay[0].expires_at = '2026-09-08T20:00:00Z';
+  const mixedOffset = makeFixture('valid');
+  mixedOffset[0].not_before = '2026-09-08T13:00:00-04:00';
+  mixedOffset[0].expires_at = '2026-09-08T16:00:00-04:00';
+
+  assert.equal(auditReceipts(leapDay, NOW).ok, true);
+  assert.equal(auditReceipts(mixedOffset, NOW).ok, true);
 });
 
 test('a cyclic parent chain is rejected without hanging', () => {

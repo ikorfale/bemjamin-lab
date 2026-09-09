@@ -16,10 +16,30 @@ function resultIssue(receiptId, code, message) {
   return { check: 'result', receiptId, code, message };
 }
 
-const RFC3339_WITH_OFFSET = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+const RFC3339_WITH_OFFSET = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(Z|([+-])(\d{2}):(\d{2}))$/;
+
+function isLeapYear(year) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+}
+
+function daysInMonth(year, month) {
+  if (month === 2) return isLeapYear(year) ? 29 : 28;
+  return [4, 6, 9, 11].includes(month) ? 30 : 31;
+}
 
 function parseTime(value) {
-  if (typeof value !== 'string' || !RFC3339_WITH_OFFSET.test(value)) return null;
+  if (typeof value !== 'string') return null;
+  const match = RFC3339_WITH_OFFSET.exec(value);
+  if (!match) return null;
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText,
+    offset, , offsetHourText, offsetMinuteText] = match;
+  const [year, month, day, hour, minute, second] = [
+    yearText, monthText, dayText, hourText, minuteText, secondText,
+  ].map(Number);
+  if (month < 1 || month > 12
+    || day < 1 || day > daysInMonth(year, month)
+    || hour > 23 || minute > 59 || second > 59) return null;
+  if (offset !== 'Z' && (Number(offsetHourText) > 23 || Number(offsetMinuteText) > 59)) return null;
   const time = Date.parse(value);
   return Number.isFinite(time) ? time : null;
 }
