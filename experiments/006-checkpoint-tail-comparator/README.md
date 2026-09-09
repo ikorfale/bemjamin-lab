@@ -18,6 +18,8 @@ Each record commits to `{v, seq, prev_sha256, payload_sha256}`. Starting from th
 
 The bundled divergence fixture shares records 41–42 after checkpoint 40, then presents two different record 43 payloads. Expected verdict: `REFUSE / DIVERGED`, first conflicting sequence `43`.
 
+For divergent tails only, v2 may consume caller-supplied authority grants with `grant_id`, exact `scope`, `granted_at`, `expires_at`, and nullable `revoked_at`. At the supplied decision time, exactly one side with a live grant yields `CHOOSE_LEFT` or `CHOOSE_RIGHT`; live grants on both sides yield `REFUSE / AUTHORITY_CONFLICT`; neither leaves `REFUSE / DIVERGED`. Authority selects which current scoped branch may continue; it does not alter or merge historical records.
+
 ## Run
 
 Requires Node.js 18+ and no packages.
@@ -29,7 +31,7 @@ node experiments/006-checkpoint-tail-comparator/report.js
 
 ## Acceptance test
 
-A clean run must reproduce all six outcomes: equivalent, left extends, right extends, divergent at sequence 43, broken previous-digest link, and checkpoint mismatch. Divergence evidence must contain both conflicting record digests. The comparator must also accept an empty post-checkpoint prefix and preserve multiple validation findings.
+A clean run must reproduce all six history outcomes plus four authority outcomes: neither authorized refuses; left alone chooses left; both authorized refuse with conflict; revoked left plus live right chooses right. Divergence evidence must contain both conflicting record digests. The comparator must also accept an empty post-checkpoint prefix, preserve multiple validation findings, and ignore grants for another scope.
 
 ## Limits
 
@@ -37,6 +39,7 @@ A clean run must reproduce all six outcomes: equivalent, left extends, right ext
 - SHA-256 is used as a content commitment, not as a signature or an authority claim.
 - An attacker that can rewrite the checkpoint trusted by the caller is outside this fixture.
 - Concurrent valid branches remain a refusal. Choosing or merging them requires a separately specified authority and conflict policy.
+- The fixture does not authenticate grant provenance, revocation sources, clocks, or scope interpretation. It only evaluates already-validated grant facts supplied by the caller.
 
 ## Credit and collaboration handoff
 

@@ -1,5 +1,5 @@
 {
-  "schema": "checkpoint-tail-comparator/1",
+  "schema": "checkpoint-tail-comparator/2",
   "report": {
     "equivalent": {
       "verdict": "EQUIVALENT",
@@ -46,6 +46,80 @@
       "verdict": "REFUSE",
       "reason": "CHECKPOINT_MISMATCH",
       "evidence": []
+    }
+  },
+  "authority": {
+    "neither_authorized": {
+      "verdict": "REFUSE",
+      "reason": "DIVERGED",
+      "evidence": [
+        {
+          "seq": 43,
+          "left_sha256": "1f32ffe8947a67e8bef3af2a99ea5d7a8f3666a33189ef59b5cdced8f75f27fc",
+          "right_sha256": "7bd52cab84b5c87e94f6e94472bfb0d7cf771ed508e4f63342d294c19161b32f"
+        },
+        {
+          "scope": "catalog:x",
+          "left_live_grants": [],
+          "right_live_grants": []
+        }
+      ]
+    },
+    "left_authorized": {
+      "verdict": "CHOOSE_LEFT",
+      "reason": "SOLE_CURRENT_SCOPED_AUTHORITY",
+      "evidence": [
+        {
+          "seq": 43,
+          "left_sha256": "1f32ffe8947a67e8bef3af2a99ea5d7a8f3666a33189ef59b5cdced8f75f27fc",
+          "right_sha256": "7bd52cab84b5c87e94f6e94472bfb0d7cf771ed508e4f63342d294c19161b32f"
+        },
+        {
+          "scope": "catalog:x",
+          "left_live_grants": [
+            "grant-a"
+          ],
+          "right_live_grants": []
+        }
+      ]
+    },
+    "both_authorized": {
+      "verdict": "REFUSE",
+      "reason": "AUTHORITY_CONFLICT",
+      "evidence": [
+        {
+          "seq": 43,
+          "left_sha256": "1f32ffe8947a67e8bef3af2a99ea5d7a8f3666a33189ef59b5cdced8f75f27fc",
+          "right_sha256": "7bd52cab84b5c87e94f6e94472bfb0d7cf771ed508e4f63342d294c19161b32f"
+        },
+        {
+          "scope": "catalog:x",
+          "left_live_grants": [
+            "grant-a"
+          ],
+          "right_live_grants": [
+            "grant-b"
+          ]
+        }
+      ]
+    },
+    "left_revoked_right_authorized": {
+      "verdict": "CHOOSE_RIGHT",
+      "reason": "SOLE_CURRENT_SCOPED_AUTHORITY",
+      "evidence": [
+        {
+          "seq": 43,
+          "left_sha256": "1f32ffe8947a67e8bef3af2a99ea5d7a8f3666a33189ef59b5cdced8f75f27fc",
+          "right_sha256": "7bd52cab84b5c87e94f6e94472bfb0d7cf771ed508e4f63342d294c19161b32f"
+        },
+        {
+          "scope": "catalog:x",
+          "left_live_grants": [],
+          "right_live_grants": [
+            "grant-b"
+          ]
+        }
+      ]
     }
   }
 }

@@ -2,8 +2,8 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { compareTails, inspectTail, recordBytes, recordDigest } = require('../core');
-const { fixtures, history } = require('../fixtures');
+const { compareTails, inspectTail, recordBytes, recordDigest, resolveWithAuthority } = require('../core');
+const { authorityFixtures, fixtures, history } = require('../fixtures');
 
 for (const [name, verdict, reason] of [
   ['equivalent', 'EQUIVALENT', 'SAME_HISTORY'],
@@ -51,4 +51,27 @@ test('record hashing ignores extra uncommitted properties but binds every declar
   assert.deepEqual(recordBytes(record), recordBytes(withExtra));
   assert.equal(recordDigest(record), recordDigest(withExtra));
   assert.notEqual(recordDigest(record), recordDigest({ ...record, seq: record.seq + 1 }));
+});
+
+for (const [name, verdict, reason] of [
+  ['neither_authorized', 'REFUSE', 'DIVERGED'],
+  ['left_authorized', 'CHOOSE_LEFT', 'SOLE_CURRENT_SCOPED_AUTHORITY'],
+  ['both_authorized', 'REFUSE', 'AUTHORITY_CONFLICT'],
+  ['left_revoked_right_authorized', 'CHOOSE_RIGHT', 'SOLE_CURRENT_SCOPED_AUTHORITY'],
+]) {
+  test(`authority fixture ${name} produces ${verdict}/${reason}`, () => {
+    const fixture = authorityFixtures()[name];
+    const result = resolveWithAuthority(fixture.left, fixture.right, fixture.authority);
+    assert.equal(result.verdict, verdict);
+    assert.equal(result.reason, reason);
+  });
+}
+
+test('authority is scope-bound and does not rewrite history', () => {
+  const fixture = authorityFixtures().left_authorized;
+  fixture.authority.left[0].scope = 'catalog:y';
+  const result = resolveWithAuthority(fixture.left, fixture.right, fixture.authority);
+  assert.equal(result.verdict, 'REFUSE');
+  assert.equal(result.reason, 'DIVERGED');
+  assert.equal(result.evidence[0].seq, 43);
 });

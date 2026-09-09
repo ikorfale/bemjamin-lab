@@ -41,4 +41,22 @@ function fixtures() {
   };
 }
 
-module.exports = { checkpoint, fixtures, hash, history };
+function authorityFixtures() {
+  const [left, right] = fixtures().diverged;
+  const now = 100;
+  const grant = (grant_id, overrides = {}) => ({
+    grant_id, scope: 'catalog:x', granted_at: 50, expires_at: 150, revoked_at: null, ...overrides,
+  });
+  return {
+    neither_authorized: { left, right, authority: { now, scope: 'catalog:x', left: [], right: [] } },
+    left_authorized: { left, right, authority: { now, scope: 'catalog:x', left: [grant('grant-a')], right: [] } },
+    both_authorized: { left, right, authority: { now, scope: 'catalog:x', left: [grant('grant-a')], right: [grant('grant-b')] } },
+    left_revoked_right_authorized: {
+      left, right, authority: {
+        now, scope: 'catalog:x', left: [grant('grant-a', { revoked_at: 90 })], right: [grant('grant-b')],
+      },
+    },
+  };
+}
+
+module.exports = { authorityFixtures, checkpoint, fixtures, hash, history };

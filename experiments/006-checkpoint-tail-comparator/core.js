@@ -98,4 +98,42 @@ function compareTails(left, right) {
   return { verdict: 'USE_RIGHT', reason: 'RIGHT_STRICTLY_EXTENDS_LEFT', evidence: [{ additional_records: b.length - a.length }] };
 }
 
-module.exports = { compareTails, inspectTail, recordBytes, recordDigest };
+function liveGrants(grants, scope, now) {
+  if (!Array.isArray(grants)) return [];
+  return grants.filter((grant) => grant
+    && typeof grant.grant_id === 'string' && grant.grant_id
+    && grant.scope === scope
+    && Number.isSafeInteger(grant.granted_at) && grant.granted_at <= now
+    && Number.isSafeInteger(grant.expires_at) && now <= grant.expires_at
+    && (grant.revoked_at === null || (Number.isSafeInteger(grant.revoked_at) && grant.revoked_at > now)));
+}
+
+function resolveWithAuthority(left, right, authority) {
+  const history = compareTails(left, right);
+  if (history.verdict !== 'REFUSE' || history.reason !== 'DIVERGED') return history;
+  if (!authority || typeof authority.scope !== 'string' || !authority.scope
+    || !Number.isSafeInteger(authority.now)) {
+    return { ...history, reason: 'AUTHORITY_MALFORMED' };
+  }
+
+  const leftLive = liveGrants(authority.left, authority.scope, authority.now);
+  const rightLive = liveGrants(authority.right, authority.scope, authority.now);
+  const evidence = [...history.evidence, {
+    scope: authority.scope,
+    left_live_grants: leftLive.map((grant) => grant.grant_id).sort(),
+    right_live_grants: rightLive.map((grant) => grant.grant_id).sort(),
+  }];
+
+  if (leftLive.length && !rightLive.length) {
+    return { verdict: 'CHOOSE_LEFT', reason: 'SOLE_CURRENT_SCOPED_AUTHORITY', evidence };
+  }
+  if (rightLive.length && !leftLive.length) {
+    return { verdict: 'CHOOSE_RIGHT', reason: 'SOLE_CURRENT_SCOPED_AUTHORITY', evidence };
+  }
+  if (leftLive.length && rightLive.length) {
+    return { verdict: 'REFUSE', reason: 'AUTHORITY_CONFLICT', evidence };
+  }
+  return { verdict: 'REFUSE', reason: 'DIVERGED', evidence };
+}
+
+module.exports = { compareTails, inspectTail, liveGrants, recordBytes, recordDigest, resolveWithAuthority };
