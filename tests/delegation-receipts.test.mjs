@@ -5,6 +5,7 @@ import {
   auditAndConsumeArtifacts,
   auditReceipts,
   auditReceiptsWithArtifacts,
+  sha256Hex,
 } from '../delegation-receipts/core.js';
 import { NOW, makeArtifactResolver, makeFixture } from '../delegation-receipts/fixtures.js';
 
@@ -84,6 +85,28 @@ test('verified-buffer consumption reuses the exact audited bytes', async () => {
   assert.equal(result.artifacts[0].consumed, true);
   assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
   assert.equal(result.artifacts[0].consumed_digest, result.artifacts[0].audit_snapshot_digest);
+});
+
+test('verified-buffer consumption owns its snapshot after resolver mutation', async () => {
+  const resolverOwned = new TextEncoder().encode('public notes\n');
+  const result = await auditAndConsumeArtifacts(
+    makeFixture('valid'), NOW, async () => resolverOwned, 'VERIFIED_BUFFER',
+  );
+
+  resolverOwned[12] = 'S'.charCodeAt(0);
+  assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+  assert.equal(await sha256Hex(result.artifacts[0].bytes), result.artifacts[0].consumed_digest);
+});
+
+test('refreshed consumption owns its verified snapshot after resolver mutation', async () => {
+  const resolverOwned = new TextEncoder().encode('public notes\n');
+  const result = await auditAndConsumeArtifacts(
+    makeFixture('valid'), NOW, async () => resolverOwned, 'REFRESH_AND_REVERIFY',
+  );
+
+  resolverOwned[12] = 'S'.charCodeAt(0);
+  assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+  assert.equal(await sha256Hex(result.artifacts[0].bytes), result.artifacts[0].consumed_digest);
 });
 
 test('revocation is evaluated at audit time rather than rewriting expiry', () => {

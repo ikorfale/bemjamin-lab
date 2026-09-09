@@ -171,6 +171,11 @@ function asBytes(value) {
   return null;
 }
 
+function ownBytes(value) {
+  const bytes = asBytes(value);
+  return bytes ? new Uint8Array(bytes) : null;
+}
+
 export async function sha256Hex(value) {
   const bytes = asBytes(value);
   if (!bytes) throw new TypeError('artifact must be a string, Uint8Array, or ArrayBuffer');
@@ -249,7 +254,7 @@ export async function auditAndConsumeArtifacts(
     } catch {
       auditValue = undefined;
     }
-    const auditBytes = asBytes(auditValue);
+    const auditBytes = ownBytes(auditValue);
     if (!auditBytes) {
       issues.push(resultIssue(id, 'RESULT_UNAVAILABLE', `artifact unavailable at ${leaf.result_locator}`));
       continue;
@@ -272,7 +277,7 @@ export async function auditAndConsumeArtifacts(
       } catch {
         consumedValue = undefined;
       }
-      const refreshedBytes = asBytes(consumedValue);
+      const refreshedBytes = ownBytes(consumedValue);
       if (!refreshedBytes) {
         issues.push(resultIssue(
           id,
