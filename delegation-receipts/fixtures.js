@@ -19,6 +19,7 @@ export const faultLabels = Object.freeze({
   valid: 'Valid attenuation',
   widened_scope: 'Scope widening',
   changed_principal: 'Principal substitution',
+  early_child: 'Child starts before parent',
   expired_child: 'Expired child',
   revoked_ancestor: 'Revoked ancestor',
   broken_parent: 'Broken parent link',
@@ -36,6 +37,7 @@ export function makeFixture(name) {
 
   if (name === 'widened_scope') child.scopes.push('publish:write');
   if (name === 'changed_principal') child.principal = 'mallory';
+  if (name === 'early_child') child.not_before = '2026-09-08T16:00:00Z';
   if (name === 'expired_child') child.expires_at = '2026-09-08T17:30:00Z';
   if (name === 'revoked_ancestor') receipts[0].revoked_at = '2026-09-08T17:30:00Z';
   if (name === 'broken_parent') child.parent_id = 'r-vanished';

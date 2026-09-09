@@ -14,6 +14,7 @@ test('valid attenuating chain passes every check', () => {
 for (const [fault, check] of [
   ['widened_scope', 'scope'],
   ['changed_principal', 'principal'],
+  ['early_child', 'time'],
   ['expired_child', 'time'],
   ['revoked_ancestor', 'revocation'],
   ['broken_parent', 'chain'],
@@ -41,6 +42,11 @@ test('a child cannot outlive its parent', () => {
   receipts[1].expires_at = '2026-09-08T21:00:00Z';
   const report = auditReceipts(receipts, NOW);
   assert.ok(report.issues.some((entry) => entry.message === 'child expires after its parent'));
+});
+
+test('a child cannot begin before its parent', () => {
+  const report = auditReceipts(makeFixture('early_child'), NOW);
+  assert.ok(report.issues.some((entry) => entry.message === 'child starts before its parent'));
 });
 
 test('a cyclic parent chain is rejected without hanging', () => {

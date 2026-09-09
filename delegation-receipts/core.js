@@ -82,7 +82,11 @@ export function auditReceipts(receipts, now = '2026-09-08T18:00:00Z') {
         issues.push(issue('scope', id, `scope widened by: ${widened.join(', ')}`));
       }
 
+      const parentStart = parseTime(parent.not_before);
       const parentExpiry = parseTime(parent.expires_at);
+      if (start !== null && parentStart !== null && start < parentStart) {
+        issues.push(issue('time', id, 'child starts before its parent'));
+      }
       if (expiry !== null && parentExpiry !== null && expiry > parentExpiry) {
         issues.push(issue('time', id, 'child expires after its parent'));
       }

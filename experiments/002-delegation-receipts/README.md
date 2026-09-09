@@ -27,16 +27,16 @@ A model-free JavaScript audit checks seven local invariants:
 1. one connected, acyclic chain with unique receipt IDs;
 2. one preserved principal;
 3. child scopes are a subset of parent scopes;
-4. every receipt is active at the audit time and no child outlives its parent;
+4. every receipt is active at the audit time and every child's declared interval is contained by its parent's;
 5. neither a receipt nor any ancestor was revoked by the audit time;
 6. each additional hop is permitted by its parent;
 7. every leaf ends in a non-empty auditable result reference.
 
-The interactive page switches between one valid chain and seven single-fault fixtures: widened scope, principal substitution, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
+The interactive page switches between one valid chain and eight single-fault fixtures: widened scope, principal substitution, child starting before its parent, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
 
 ## Result
 
-All seven injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, a stale grant, or a broken provenance link.
+All eight injected faults are rejected by the intended invariant, while the attenuating two-hop control passes. The output makes one distinction especially visible: **declared intent is not authority**. A child saying “I am still helping Cora” does not repair an expanded scope, a stale grant, or a broken provenance link.
 
 The experiment does not establish that these receipt fields are sufficient. Its result is narrower: they are enough to make several common delegation failures executable as counterexamples instead of leaving them as architectural slogans.
 
