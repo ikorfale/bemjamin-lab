@@ -216,6 +216,239 @@
         ]
       }
     },
+    "blank_root_principal": {
+      "receipts": [
+        {
+          "id": "r-root",
+          "parent_id": null,
+          "principal": "",
+          "actor": "planner",
+          "scopes": [
+            "web:read",
+            "report:write"
+          ],
+          "not_before": "2026-09-08T17:00:00Z",
+          "expires_at": "2026-09-08T20:00:00Z",
+          "redelegation_allowed": true,
+          "result_ref": ""
+        },
+        {
+          "id": "r-research",
+          "parent_id": "r-root",
+          "principal": "cora",
+          "actor": "researcher",
+          "scopes": [
+            "web:read"
+          ],
+          "not_before": "2026-09-08T17:05:00Z",
+          "expires_at": "2026-09-08T19:00:00Z",
+          "redelegation_allowed": false,
+          "result_ref": "sha256:public-notes-7d3a"
+        }
+      ],
+      "audit": {
+        "ok": false,
+        "checked_at": "2026-09-08T18:00:00Z",
+        "receipt_count": 2,
+        "checks": [
+          {
+            "name": "chain",
+            "ok": true
+          },
+          {
+            "name": "principal",
+            "ok": false
+          },
+          {
+            "name": "scope",
+            "ok": true
+          },
+          {
+            "name": "time",
+            "ok": true
+          },
+          {
+            "name": "revocation",
+            "ok": true
+          },
+          {
+            "name": "redelegation",
+            "ok": true
+          },
+          {
+            "name": "result",
+            "ok": true
+          }
+        ],
+        "issues": [
+          {
+            "check": "principal",
+            "receiptId": "r-root",
+            "message": "principal must be a non-empty string"
+          },
+          {
+            "check": "principal",
+            "receiptId": "r-research",
+            "message": "principal changed from  to cora"
+          }
+        ]
+      }
+    },
+    "null_root_principal": {
+      "receipts": [
+        {
+          "id": "r-root",
+          "parent_id": null,
+          "principal": null,
+          "actor": "planner",
+          "scopes": [
+            "web:read",
+            "report:write"
+          ],
+          "not_before": "2026-09-08T17:00:00Z",
+          "expires_at": "2026-09-08T20:00:00Z",
+          "redelegation_allowed": true,
+          "result_ref": ""
+        },
+        {
+          "id": "r-research",
+          "parent_id": "r-root",
+          "principal": "cora",
+          "actor": "researcher",
+          "scopes": [
+            "web:read"
+          ],
+          "not_before": "2026-09-08T17:05:00Z",
+          "expires_at": "2026-09-08T19:00:00Z",
+          "redelegation_allowed": false,
+          "result_ref": "sha256:public-notes-7d3a"
+        }
+      ],
+      "audit": {
+        "ok": false,
+        "checked_at": "2026-09-08T18:00:00Z",
+        "receipt_count": 2,
+        "checks": [
+          {
+            "name": "chain",
+            "ok": true
+          },
+          {
+            "name": "principal",
+            "ok": false
+          },
+          {
+            "name": "scope",
+            "ok": true
+          },
+          {
+            "name": "time",
+            "ok": true
+          },
+          {
+            "name": "revocation",
+            "ok": true
+          },
+          {
+            "name": "redelegation",
+            "ok": true
+          },
+          {
+            "name": "result",
+            "ok": true
+          }
+        ],
+        "issues": [
+          {
+            "check": "principal",
+            "receiptId": "r-root",
+            "message": "principal must be a non-empty string"
+          },
+          {
+            "check": "principal",
+            "receiptId": "r-research",
+            "message": "principal changed from null to cora"
+          }
+        ]
+      }
+    },
+    "missing_root_principal": {
+      "receipts": [
+        {
+          "id": "r-root",
+          "parent_id": null,
+          "actor": "planner",
+          "scopes": [
+            "web:read",
+            "report:write"
+          ],
+          "not_before": "2026-09-08T17:00:00Z",
+          "expires_at": "2026-09-08T20:00:00Z",
+          "redelegation_allowed": true,
+          "result_ref": ""
+        },
+        {
+          "id": "r-research",
+          "parent_id": "r-root",
+          "principal": "cora",
+          "actor": "researcher",
+          "scopes": [
+            "web:read"
+          ],
+          "not_before": "2026-09-08T17:05:00Z",
+          "expires_at": "2026-09-08T19:00:00Z",
+          "redelegation_allowed": false,
+          "result_ref": "sha256:public-notes-7d3a"
+        }
+      ],
+      "audit": {
+        "ok": false,
+        "checked_at": "2026-09-08T18:00:00Z",
+        "receipt_count": 2,
+        "checks": [
+          {
+            "name": "chain",
+            "ok": true
+          },
+          {
+            "name": "principal",
+            "ok": false
+          },
+          {
+            "name": "scope",
+            "ok": true
+          },
+          {
+            "name": "time",
+            "ok": true
+          },
+          {
+            "name": "revocation",
+            "ok": true
+          },
+          {
+            "name": "redelegation",
+            "ok": true
+          },
+          {
+            "name": "result",
+            "ok": true
+          }
+        ],
+        "issues": [
+          {
+            "check": "principal",
+            "receiptId": "r-root",
+            "message": "principal must be a non-empty string"
+          },
+          {
+            "check": "principal",
+            "receiptId": "r-research",
+            "message": "principal changed from undefined to cora"
+          }
+        ]
+      }
+    },
     "early_child": {
       "receipts": [
         {

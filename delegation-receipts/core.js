@@ -43,7 +43,10 @@ export function auditReceipts(receipts, now = '2026-09-08T18:00:00Z') {
       issues.push(issue('chain', id, `parent ${String(receipt?.parent_id)} does not exist`));
     }
 
-    if (rootPrincipal && receipt?.principal !== rootPrincipal) {
+    if (typeof receipt?.principal !== 'string' || !receipt.principal.trim()) {
+      issues.push(issue('principal', id, 'principal must be a non-empty string'));
+    }
+    if (receipt?.principal !== rootPrincipal) {
       issues.push(issue('principal', id, `principal changed from ${rootPrincipal} to ${String(receipt?.principal)}`));
     }
 

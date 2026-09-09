@@ -14,6 +14,9 @@ test('valid attenuating chain passes every check', () => {
 for (const [fault, check] of [
   ['widened_scope', 'scope'],
   ['changed_principal', 'principal'],
+  ['blank_root_principal', 'principal'],
+  ['null_root_principal', 'principal'],
+  ['missing_root_principal', 'principal'],
   ['early_child', 'time'],
   ['expired_child', 'time'],
   ['revoked_ancestor', 'revocation'],
@@ -48,6 +51,16 @@ test('a child cannot begin before its parent', () => {
   const report = auditReceipts(makeFixture('early_child'), NOW);
   assert.ok(report.issues.some((entry) => entry.message === 'child starts before its parent'));
 });
+
+for (const fault of ['blank_root_principal', 'null_root_principal', 'missing_root_principal']) {
+  test(`${fault} reports malformed root identity`, () => {
+    const report = auditReceipts(makeFixture(fault), NOW);
+    assert.ok(report.issues.some((entry) =>
+      entry.check === 'principal'
+      && entry.receiptId === 'r-root'
+      && entry.message === 'principal must be a non-empty string'));
+  });
+}
 
 test('a child may exactly share both parent boundaries', () => {
   const receipts = makeFixture('valid');
