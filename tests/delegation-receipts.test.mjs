@@ -109,6 +109,34 @@ test('refreshed consumption owns its verified snapshot after resolver mutation',
   assert.equal(await sha256Hex(result.artifacts[0].bytes), result.artifacts[0].consumed_digest);
 });
 
+for (const mode of ['VERIFIED_BUFFER', 'REFRESH_AND_REVERIFY']) {
+  test(`${mode} hashes and owns only the supplied Uint8Array window`, async () => {
+    const payload = new TextEncoder().encode('public notes\n');
+    const backing = new Uint8Array(payload.length + 4);
+    backing.set([0xaa, 0xbb], 0);
+    backing.set(payload, 2);
+    backing.set([0xcc, 0xdd], 2 + payload.length);
+    const view = new Uint8Array(backing.buffer, 2, payload.length);
+    const expectedWholeDigest = await sha256Hex(backing);
+
+    const result = await auditAndConsumeArtifacts(
+      makeFixture('valid'), NOW, async () => view, mode,
+    );
+
+    assert.equal(result.ok, true);
+    assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+    assert.notEqual(result.artifacts[0].consumed_digest, expectedWholeDigest);
+
+    backing[0] ^= 0xff;
+    backing[backing.length - 1] ^= 0xff;
+    assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+
+    view[12] = 'S'.charCodeAt(0);
+    assert.equal(new TextDecoder().decode(result.artifacts[0].bytes), 'public notes\n');
+    assert.equal(await sha256Hex(result.artifacts[0].bytes), result.artifacts[0].consumed_digest);
+  });
+}
+
 test('revocation is evaluated at audit time rather than rewriting expiry', () => {
   const receipts = makeFixture('revoked_ancestor');
   const beforeRevocation = auditReceipts(receipts, '2026-09-08T17:20:00Z');
