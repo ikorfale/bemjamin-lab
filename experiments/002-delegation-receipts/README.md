@@ -18,7 +18,8 @@ The playground models each hop as a deliberately small JSON receipt:
   "not_before": "2026-09-08T17:05:00Z",
   "expires_at": "2026-09-08T19:00:00Z",
   "redelegation_allowed": false,
-  "result_ref": "sha256:public-notes-7d3a"
+  "result_locator": "snapshot://public-notes",
+  "result_sha256": "a4c30ecc2e678acd020725a5137d25358898caa4bc038ac2905bdb273d037d33"
 }
 ```
 
@@ -30,9 +31,9 @@ A model-free JavaScript audit checks seven local invariants:
 4. every receipt uses a non-empty half-open interval `[not_before, expires_at)` in RFC 3339 form with an explicit `Z` or numeric offset, is active at the audit time, and every child's declared interval is contained by its parent's (equal boundaries are allowed and comparisons use parsed instants rather than timestamp text);
 5. neither a receipt nor any ancestor was revoked by the audit time;
 6. each additional hop is permitted by its parent;
-7. every leaf ends in a non-empty auditable result reference.
+7. every leaf separates its retrieval locator from a lowercase SHA-256 digest, retrieves the artifact independently, and verifies the exact bytes; unavailable artifacts and digest mismatches fail closed.
 
-The interactive page switches between one valid chain and twelve single-fault fixtures: widened scope, principal substitution, blank/null/missing root principal, child starting before its parent, offset-free time, expired child, revoked ancestor, broken parent, forbidden third hop, and missing result evidence. It shows both human-readable checks and the exact JSON.
+The interactive page switches between one valid chain and thirteen single-fault fixtures: widened scope, principal substitution, blank/null/missing root principal, child starting before its parent, offset-free time, expired child, revoked ancestor, broken parent, forbidden third hop, missing result evidence, and a one-byte artifact mutation at a stable locator. It shows both human-readable checks and the exact JSON.
 
 ## Result
 
@@ -58,7 +59,7 @@ To challenge the sketch, add a fixture in `delegation-receipts/fixtures.js` that
 ## Limitations
 
 - Receipts are unsigned JSON; the toy does not authenticate an actor or make a claim tamper-evident.
-- `result_ref` is checked only for presence, not content, hash validity, truth, or causal relation to the task.
+- Result bytes are checked against a frozen digest, but the toy's in-memory resolver does not prove transport authenticity, publisher identity, truth, freshness, or causal relation to the task.
 - Scope strings use exact set inclusion. Real authorization needs resource, action, audience, context, and policy semantics.
 - Time comparisons parse RFC 3339 strings to instants while retaining the original strings; the toy does not canonicalize signed evidence, model clock skew or revocation propagation latency, or decide whether policy applies revocation retroactively.
 - A preserved principal does not prove informed consent, continuing intent, or adequate human oversight.

@@ -1,12 +1,12 @@
 import { writeFile } from 'node:fs/promises';
 
-import { auditReceipts } from '../delegation-receipts/core.js';
-import { NOW, faultLabels, makeFixture } from '../delegation-receipts/fixtures.js';
+import { auditReceiptsWithArtifacts } from '../delegation-receipts/core.js';
+import { NOW, faultLabels, makeArtifactResolver, makeFixture } from '../delegation-receipts/fixtures.js';
 
-const cases = Object.fromEntries(Object.keys(faultLabels).map((name) => [name, {
+const cases = Object.fromEntries(await Promise.all(Object.keys(faultLabels).map(async (name) => [name, {
   receipts: makeFixture(name),
-  audit: auditReceipts(makeFixture(name), NOW),
-}]));
+  audit: await auditReceiptsWithArtifacts(makeFixture(name), NOW, makeArtifactResolver(name)),
+}])));
 const report = {
   schema: 'delegation-receipt-playground/0.1',
   generated_at: NOW,

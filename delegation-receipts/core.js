@@ -12,6 +12,10 @@ function issue(check, receiptId, message) {
   return { check, receiptId, message };
 }
 
+function resultIssue(receiptId, code, message) {
+  return { check: 'result', receiptId, code, message };
+}
+
 const RFC3339_WITH_OFFSET = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
 function parseTime(value) {
@@ -104,8 +108,12 @@ export function auditReceipts(receipts, now = '2026-09-08T18:00:00Z') {
 
   const leaves = receiptList.filter((candidate) => !receiptList.some((other) => other?.parent_id === candidate?.id));
   for (const leaf of leaves) {
-    if (typeof leaf?.result_ref !== 'string' || !leaf.result_ref.trim()) {
-      issues.push(issue('result', leaf?.id || '<missing-id>', 'leaf has no auditable result_ref'));
+    const id = leaf?.id || '<missing-id>';
+    if (typeof leaf?.result_locator !== 'string' || !leaf.result_locator.trim()) {
+      issues.push(resultIssue(id, 'RESULT_LOCATOR_MISSING', 'leaf has no result locator'));
+    }
+    if (typeof leaf?.result_sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(leaf.result_sha256)) {
+      issues.push(resultIssue(id, 'RESULT_DIGEST_INVALID', 'leaf has no valid lowercase SHA-256 digest'));
     }
   }
 
@@ -133,5 +141,63 @@ export function auditReceipts(receipts, now = '2026-09-08T18:00:00Z') {
       ok: !uniqueIssues.some((entry) => entry.check === name),
     })),
     issues: uniqueIssues,
+  };
+}
+
+function asBytes(value) {
+  if (typeof value === 'string') return new TextEncoder().encode(value);
+  if (value instanceof Uint8Array) return value;
+  if (value instanceof ArrayBuffer) return new Uint8Array(value);
+  return null;
+}
+
+export async function sha256Hex(value) {
+  const bytes = asBytes(value);
+  if (!bytes) throw new TypeError('artifact must be a string, Uint8Array, or ArrayBuffer');
+  const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+export async function auditReceiptsWithArtifacts(
+  receipts,
+  now = '2026-09-08T18:00:00Z',
+  resolveArtifact = async () => undefined,
+) {
+  const report = auditReceipts(receipts, now);
+  const receiptList = Array.isArray(receipts) ? receipts : [];
+  const leaves = receiptList.filter((candidate) => !receiptList.some((other) => other?.parent_id === candidate?.id));
+  const artifactIssues = [];
+
+  for (const leaf of leaves) {
+    const id = leaf?.id || '<missing-id>';
+    if (typeof leaf?.result_locator !== 'string' || !leaf.result_locator.trim()) continue;
+    if (typeof leaf?.result_sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(leaf.result_sha256)) continue;
+
+    let artifact;
+    try {
+      artifact = await resolveArtifact(leaf.result_locator);
+    } catch {
+      artifactIssues.push(resultIssue(id, 'RESULT_UNAVAILABLE', `artifact unavailable at ${leaf.result_locator}`));
+      continue;
+    }
+    const bytes = asBytes(artifact);
+    if (!bytes) {
+      artifactIssues.push(resultIssue(id, 'RESULT_UNAVAILABLE', `artifact unavailable at ${leaf.result_locator}`));
+      continue;
+    }
+    const actual = await sha256Hex(bytes);
+    if (actual !== leaf.result_sha256) {
+      artifactIssues.push(resultIssue(id, 'RESULT_DIGEST_MISMATCH', `artifact digest mismatch at ${leaf.result_locator}`));
+    }
+  }
+
+  const issues = [...report.issues, ...artifactIssues];
+  return {
+    ...report,
+    ok: issues.length === 0,
+    checks: report.checks.map((check) => check.name === 'result'
+      ? { ...check, ok: !issues.some((entry) => entry.check === 'result') }
+      : check),
+    issues,
   };
 }

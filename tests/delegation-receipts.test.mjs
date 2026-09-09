@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { auditReceipts } from '../delegation-receipts/core.js';
-import { NOW, makeFixture } from '../delegation-receipts/fixtures.js';
+import { auditReceipts, auditReceiptsWithArtifacts } from '../delegation-receipts/core.js';
+import { NOW, makeArtifactResolver, makeFixture } from '../delegation-receipts/fixtures.js';
 
 test('valid attenuating chain passes every check', () => {
   const report = auditReceipts(makeFixture('valid'), NOW);
@@ -31,6 +31,27 @@ for (const [fault, check] of [
     assert.ok(report.issues.some((entry) => entry.check === check), JSON.stringify(report));
   });
 }
+
+test('stable locator with one-byte artifact mutation is rejected by digest', async () => {
+  const receipts = makeFixture('result_digest_mismatch');
+  const structural = auditReceipts(receipts, NOW);
+  assert.equal(structural.ok, true, 'locator and frozen digest alone cannot detect replacement');
+
+  const report = await auditReceiptsWithArtifacts(receipts, NOW, makeArtifactResolver('result_digest_mismatch'));
+  assert.equal(report.ok, false);
+  assert.ok(report.issues.some((entry) =>
+    entry.receiptId === 'r-research' && entry.code === 'RESULT_DIGEST_MISMATCH'));
+});
+
+test('valid result bytes match the frozen digest', async () => {
+  const report = await auditReceiptsWithArtifacts(makeFixture('valid'), NOW, makeArtifactResolver('valid'));
+  assert.equal(report.ok, true);
+});
+
+test('unretrievable result is unknown rather than passing', async () => {
+  const report = await auditReceiptsWithArtifacts(makeFixture('valid'), NOW, async () => undefined);
+  assert.ok(report.issues.some((entry) => entry.code === 'RESULT_UNAVAILABLE'));
+});
 
 test('revocation is evaluated at audit time rather than rewriting expiry', () => {
   const receipts = makeFixture('revoked_ancestor');

@@ -1,5 +1,5 @@
-import { auditReceipts } from '../../delegation-receipts/core.js';
-import { NOW, faultLabels, makeFixture } from '../../delegation-receipts/fixtures.js';
+import { auditReceiptsWithArtifacts } from '../../delegation-receipts/core.js';
+import { NOW, faultLabels, makeArtifactResolver, makeFixture } from '../../delegation-receipts/fixtures.js';
 
 const controls = document.querySelector('#faults');
 const chain = document.querySelector('#chain');
@@ -14,9 +14,9 @@ function el(tag, className, text) {
   return node;
 }
 
-function render(name) {
+async function render(name) {
   const receipts = makeFixture(name);
-  const report = auditReceipts(receipts, NOW);
+  const report = await auditReceiptsWithArtifacts(receipts, NOW, makeArtifactResolver(name));
   const broken = new Set(report.issues.map((item) => item.receiptId));
 
   chain.replaceChildren(...receipts.map((receipt, index) => {
@@ -37,7 +37,8 @@ function render(name) {
       ['parent', receipt.parent_id ?? '—'],
       ['expires', receipt.expires_at],
       ['may delegate', receipt.redelegation_allowed ? 'yes' : 'no'],
-      ['result', receipt.result_ref || '—'],
+      ['result locator', receipt.result_locator || '—'],
+      ['result sha256', receipt.result_sha256 || '—'],
     ]) {
       facts.append(el('dt', '', key), el('dd', '', value));
     }
@@ -69,4 +70,4 @@ for (const [name, label] of Object.entries(faultLabels)) {
   controls.append(button);
 }
 
-render('valid');
+void render('valid');
