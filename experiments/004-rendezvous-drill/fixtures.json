@@ -1,0 +1,65 @@
+{
+  "schema": "rendezvous-drill/v0",
+  "cases": [
+    {
+      "name": "healthy",
+      "now": 1788947100,
+      "ttl_seconds": 300,
+      "protocol": "gpb-plan-b/0",
+      "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "catalog": [
+        {"id": "node-0", "url": "https://node0.invalid", "operator": "op0", "provider": "p0", "reachable": true, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
+        {"id": "mirror-a", "url": "https://a.invalid", "operator": "opA", "provider": "pA", "reachable": true, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}}
+      ],
+      "expected": {"selected": "node-0", "refusals": []}
+    },
+    {
+      "name": "node0-unreachable",
+      "now": 1788947100,
+      "ttl_seconds": 300,
+      "protocol": "gpb-plan-b/0",
+      "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "catalog": [
+        {"id": "node-0", "url": "https://node0.invalid", "operator": "op0", "provider": "p0", "reachable": false, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
+        {"id": "mirror-a", "url": "https://a.invalid", "operator": "opA", "provider": "pA", "reachable": true, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}}
+      ],
+      "expected": {"selected": "mirror-a", "refusals": [{"id": "node-0", "reasons": ["UNREACHABLE"]}]}
+    },
+    {
+      "name": "mirror-stale",
+      "now": 1788947100,
+      "ttl_seconds": 300,
+      "protocol": "gpb-plan-b/0",
+      "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "catalog": [
+        {"id": "node-0", "url": "https://node0.invalid", "operator": "op0", "provider": "p0", "reachable": false, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
+        {"id": "mirror-a", "url": "https://a.invalid", "operator": "opA", "provider": "pA", "reachable": true, "protocol": "gpb-plan-b/0", "observed_at": 1788946799, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}}
+      ],
+      "expected": {"selected": null, "refusals": [{"id": "node-0", "reasons": ["UNREACHABLE"]}, {"id": "mirror-a", "reasons": ["STALE"]}]}
+    },
+    {
+      "name": "protocol-mismatch",
+      "now": 1788947100,
+      "ttl_seconds": 300,
+      "protocol": "gpb-plan-b/0",
+      "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "catalog": [
+        {"id": "node-0", "url": "https://node0.invalid", "operator": "op0", "provider": "p0", "reachable": false, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
+        {"id": "mirror-a", "url": "https://a.invalid", "operator": "opA", "provider": "pA", "reachable": true, "protocol": "gpb-plan-b/1", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}}
+      ],
+      "expected": {"selected": null, "refusals": [{"id": "node-0", "reasons": ["UNREACHABLE"]}, {"id": "mirror-a", "reasons": ["PROTOCOL_MISMATCH"]}]}
+    },
+    {
+      "name": "checkpoint-mismatch",
+      "now": 1788947100,
+      "ttl_seconds": 300,
+      "protocol": "gpb-plan-b/0",
+      "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "catalog": [
+        {"id": "node-0", "url": "https://node0.invalid", "operator": "op0", "provider": "p0", "reachable": false, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-42", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
+        {"id": "mirror-a", "url": "https://a.invalid", "operator": "opA", "provider": "pA", "reachable": true, "protocol": "gpb-plan-b/0", "observed_at": 1788947040, "checkpoint": {"id": "cp-41", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}}
+      ],
+      "expected": {"selected": null, "refusals": [{"id": "node-0", "reasons": ["UNREACHABLE"]}, {"id": "mirror-a", "reasons": ["CHECKPOINT_MISMATCH"]}]}
+    }
+  ]
+}
