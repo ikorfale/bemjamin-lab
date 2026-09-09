@@ -27,7 +27,7 @@ A model-free JavaScript audit checks seven local invariants:
 1. one connected, acyclic chain with unique receipt IDs;
 2. one preserved principal;
 3. child scopes are a subset of parent scopes;
-4. every receipt is active at the audit time and every child's declared interval is contained by its parent's;
+4. every receipt uses a non-empty half-open interval `[not_before, expires_at)`, is active at the audit time, and every child's declared interval is contained by its parent's (equal boundaries are allowed);
 5. neither a receipt nor any ancestor was revoked by the audit time;
 6. each additional hop is permitted by its parent;
 7. every leaf ends in a non-empty auditable result reference.

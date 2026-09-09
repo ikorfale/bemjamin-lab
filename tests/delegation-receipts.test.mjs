@@ -49,6 +49,27 @@ test('a child cannot begin before its parent', () => {
   assert.ok(report.issues.some((entry) => entry.message === 'child starts before its parent'));
 });
 
+test('a child may exactly share both parent boundaries', () => {
+  const receipts = makeFixture('valid');
+  receipts[1].not_before = receipts[0].not_before;
+  receipts[1].expires_at = receipts[0].expires_at;
+  assert.equal(auditReceipts(receipts, NOW).ok, true);
+});
+
+test('an empty half-open interval is rejected', () => {
+  const receipts = makeFixture('valid');
+  receipts[1].expires_at = receipts[1].not_before;
+  const report = auditReceipts(receipts, NOW);
+  assert.ok(report.issues.some((entry) => entry.message === 'invalid or inverted validity interval'));
+});
+
+test('a receipt is inactive at its exact expiry boundary', () => {
+  const receipts = makeFixture('valid');
+  const report = auditReceipts(receipts, receipts[1].expires_at);
+  assert.ok(report.issues.some((entry) =>
+    entry.receiptId === 'r-research' && entry.message === `receipt is not active at ${receipts[1].expires_at}`));
+});
+
 test('a cyclic parent chain is rejected without hanging', () => {
   const receipts = makeFixture('valid');
   receipts[0].parent_id = 'r-research';
