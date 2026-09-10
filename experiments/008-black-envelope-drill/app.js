@@ -33,12 +33,6 @@
     if (scenario.value === 'captured') input.policy.seats.forEach((seat) => { seat.funding = 'single-funder'; });
     const hashes = new Map();
     const hashFn = (text) => hashes.get(text);
-    const payloads = input.slots.map((slot, index) => globalThis.BlackEnvelopeDrill.stable({
-      slot: index,
-      scheduled_at: new Date(Date.parse(input.policy.start_at) + index * input.policy.cadence_seconds * 1000).toISOString(),
-      private_kind: slot.private_kind,
-      private_note: slot.private_note || '',
-    }));
     const drawInputs = [];
     const codes = input.policy.seats.filter((seat) => !seat.conflicted).map((seat) => seat.code).sort();
     const eligibleSets = [];
@@ -52,7 +46,7 @@
         }
       }
     }
-    await Promise.all([...new Set([...payloads, ...drawInputs])].map(async (text) => hashes.set(text, await hash(text))));
+    await Promise.all([...new Set(drawInputs)].map(async (text) => hashes.set(text, await hash(text))));
     try {
       output.textContent = JSON.stringify(simulate(input, { hashFn }), null, 2);
     } catch (error) {

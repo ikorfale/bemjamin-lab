@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { drawSeat, simulate } = require('../core');
+const { assessLegacyCommitment, drawSeat, simulate } = require('../core');
 const { mixedCadence, policy } = require('../fixtures');
 
 test('deterministic public draw is stable and excludes conflicted seats', () => {
@@ -9,12 +9,28 @@ test('deterministic public draw is stable and excludes conflicted seats', () => 
   assert.notEqual(first.code, 'DUSK');
 });
 
-test('fixed cadence publishes one envelope shape without the private event label', () => {
+test('Caveman counterexample refuses the legacy deterministic commitment', () => {
+  const counterexample = {
+    case: 'dictionary attack on deterministic commitment',
+    policy: {
+      start_at: '2026-09-10T12:00:00.000Z', cadence_seconds: 300, ack_seconds: 60, max_attempts: 1,
+      public_seed: 'known', seats: [{ code: 'A', funding: 'f1', conflicts: [] }],
+    },
+    slots: [{ private_kind: 'sealed-crisis', private_note: '', acknowledgements: [true] }],
+    attacker_knows: ['core.js', 'policy', 'slot', 'scheduled_at', 'private_kind enum', 'empty private_note'],
+    attack: 'Hash both stable candidate payloads with private_kind=ordinary and private_kind=sealed-crisis; compare each SHA-256 to public envelope_sha256.',
+    expected: { decision: 'REFUSE', reason: 'LOW_ENTROPY_COMMITMENT_LEAKS_PRIVATE_KIND' },
+  };
+  assert.deepEqual(assessLegacyCommitment(counterexample), counterexample.expected);
+});
+
+test('fixed cadence publishes one envelope shape without a private label or dictionary oracle', () => {
   const result = simulate(mixedCadence);
   const envelopes = result.public_receipts.filter((item) => item.kind === 'ENVELOPE');
   assert.equal(envelopes.length, 3);
   assert.equal(result.cadence_check.one_shape, true);
   assert.equal(result.cadence_check.exposes_private_kind, false);
+  assert.equal(envelopes.some((item) => Object.hasOwn(item, 'envelope_sha256')), false);
   assert.deepEqual(envelopes.map((item) => item.scheduled_at), [
     '2026-09-10T12:00:00.000Z', '2026-09-10T12:05:00.000Z', '2026-09-10T12:10:00.000Z',
   ]);

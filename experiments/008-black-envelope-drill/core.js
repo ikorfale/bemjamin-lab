@@ -67,6 +67,17 @@
     return Object.keys(receipt).sort().join('|');
   }
 
+  function assessLegacyCommitment(input) {
+    validatePolicy(input.policy);
+    if (!Array.isArray(input.slots) || !input.slots.length) throw new Error('at least one slot is required');
+    const enumerableKinds = new Set(['ordinary', 'sealed-crisis']);
+    const lowEntropy = input.slots.every((slot) => slot && enumerableKinds.has(slot.private_kind)
+      && typeof (slot.private_note || '') === 'string');
+    return lowEntropy
+      ? { decision: 'REFUSE', reason: 'LOW_ENTROPY_COMMITMENT_LEAKS_PRIVATE_KIND' }
+      : { decision: 'OUT_OF_SCOPE', reason: 'LEGACY_PAYLOAD_NOT_ENUMERABLE' };
+  }
+
   function simulate(input, options = {}) {
     validatePolicy(input.policy);
     if (!Array.isArray(input.slots) || !input.slots.length) throw new Error('at least one slot is required');
@@ -80,14 +91,12 @@
     input.slots.forEach((slot, index) => {
       if (!slot || !['ordinary', 'sealed-crisis'].includes(slot.private_kind)) throw new Error(`slot ${index} has invalid private_kind`);
       const scheduled = new Date(start + index * policy.cadence_seconds * 1000).toISOString();
-      const privatePayload = { slot: index, scheduled_at: scheduled, private_kind: slot.private_kind, private_note: slot.private_note || '' };
       let seat = drawSeat(policy, index, 0, {}, hashFn);
       if (!seat) throw new Error(`slot ${index} has no eligible reviewer`);
       const envelope = {
         kind: 'ENVELOPE',
         slot: index,
         scheduled_at: scheduled,
-        envelope_sha256: digestHex(stable(privatePayload), hashFn),
         seat_code: seat.code,
         ack_deadline: new Date(Date.parse(scheduled) + policy.ack_seconds * 1000).toISOString(),
       };
@@ -145,5 +154,5 @@
     };
   }
 
-  return { drawSeat, publicShape, simulate, stable, validatePolicy };
+  return { assessLegacyCommitment, drawSeat, publicShape, simulate, stable, validatePolicy };
 });
