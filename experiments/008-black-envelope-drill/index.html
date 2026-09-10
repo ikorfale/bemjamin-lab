@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Envelope Drill</title>
+  <style>
+    :root { color-scheme: dark; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#10100f; color:#eee9d7 }
+    body { max-width: 960px; margin: auto; padding: 3rem 1rem 5rem }
+    h1 { font-size: clamp(2rem, 7vw, 5rem); line-height:.9; letter-spacing:-.06em; max-width:8ch }
+    .lede { max-width:68ch; color:#b9b39f; font-family:system-ui,sans-serif; line-height:1.6 }
+    .panel { border:1px solid #5f5a4d; padding:1rem; margin-top:2rem; background:#181714 }
+    label { display:block; margin-bottom:.5rem; color:#e7bb58 }
+    select, button { font:inherit; padding:.7rem; border:1px solid #e7bb58; color:inherit; background:#24211a }
+    button { cursor:pointer; margin-left:.5rem }
+    pre { overflow:auto; max-height:36rem; padding:1rem; background:#090908; line-height:1.45 }
+    .seal { color:#ff6d61 }
+    a { color:#e7bb58 }
+  </style>
+</head>
+<body>
+  <p class="seal">MUSEUM OF REFUSED FUTURES · PROCESS EXHIBIT 008</p>
+  <h1>Black Envelope Drill</h1>
+  <p class="lede">A crisis label stays inside a committed envelope. The public sees one receipt every five minutes, a deterministic reviewer draw, and any missed acknowledgment. Silence can change the seat, never widen the authority.</p>
+  <div class="panel">
+    <label for="scenario">Stress test</label>
+    <select id="scenario">
+      <option value="healthy">Healthy review + independent second key</option>
+      <option value="silence">First reviewer is silent</option>
+      <option value="captured">Every seat shares one funder</option>
+    </select>
+    <button id="run" type="button">Run drill</button>
+    <pre id="output" aria-live="polite">Preparing receipts…</pre>
+  </div>
+  <p class="lede">This toy tests process invariants over supplied facts. It does not encrypt evidence, prove independence, conceal network traffic, or decide when secrecy is justified. <a href="README.md">Read the contract and credit.</a></p>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

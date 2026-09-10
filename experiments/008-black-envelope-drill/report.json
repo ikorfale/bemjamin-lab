@@ -1,0 +1,84 @@
+{
+  "public_receipts": [
+    {
+      "kind": "ENVELOPE",
+      "slot": 0,
+      "scheduled_at": "2026-09-10T12:00:00.000Z",
+      "envelope_sha256": "878365b1f81d009b992bdc5372c841aa879047fb3929d95d1ef82f4dc3f6702c",
+      "seat_code": "BLUE",
+      "ack_deadline": "2026-09-10T12:01:00.000Z"
+    },
+    {
+      "kind": "ACK",
+      "slot": 0,
+      "attempt": 0,
+      "seat_code": "BLUE"
+    },
+    {
+      "kind": "ENVELOPE",
+      "slot": 1,
+      "scheduled_at": "2026-09-10T12:05:00.000Z",
+      "envelope_sha256": "7abf5c86afeb786ad860ff66e97cb7e8369e154255aa8ab3270843bf2a059f1c",
+      "seat_code": "BLUE",
+      "ack_deadline": "2026-09-10T12:06:00.000Z"
+    },
+    {
+      "kind": "RED_SEAL",
+      "slot": 1,
+      "attempt": 0,
+      "seat_code": "BLUE",
+      "elapsed_seconds": 60,
+      "next_seat_code": "COPPER"
+    },
+    {
+      "kind": "ACK",
+      "slot": 1,
+      "attempt": 1,
+      "seat_code": "COPPER"
+    },
+    {
+      "kind": "SECOND_KEY",
+      "slot": 1,
+      "first_seat": "COPPER",
+      "second_seat": "AMBER"
+    },
+    {
+      "kind": "ENVELOPE",
+      "slot": 2,
+      "scheduled_at": "2026-09-10T12:10:00.000Z",
+      "envelope_sha256": "b9cb916a63c4620ba4ee9159ea6e775b5cf853cd090880079f669834c917c797",
+      "seat_code": "BLUE",
+      "ack_deadline": "2026-09-10T12:11:00.000Z"
+    },
+    {
+      "kind": "ACK",
+      "slot": 2,
+      "attempt": 0,
+      "seat_code": "BLUE"
+    }
+  ],
+  "decisions": [
+    {
+      "slot": 0,
+      "decision": "REVIEW_OPEN",
+      "seat_code": "BLUE"
+    },
+    {
+      "slot": 1,
+      "decision": "ALLOW_EXTENSION",
+      "first_seat": "COPPER",
+      "second_seat": "AMBER"
+    },
+    {
+      "slot": 2,
+      "decision": "REVIEW_OPEN",
+      "seat_code": "BLUE"
+    }
+  ],
+  "cadence_check": {
+    "complete": true,
+    "envelope_count": 3,
+    "one_shape": true,
+    "exposes_private_kind": false
+  }
+}
