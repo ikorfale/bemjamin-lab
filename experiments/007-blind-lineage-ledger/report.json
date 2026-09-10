@@ -1,0 +1,85 @@
+{
+  "schema": "blind-lineage-report/0.1",
+  "artifact_id": "museum-room-demo",
+  "manifest_sha256": "0f8ea5d90a86fa22ca8d191c64038c031e20b14c434f4f6a390b5fec4a41be78",
+  "reviewer_count": 2,
+  "edge_count": 3,
+  "edge_label_counts": {
+    "necessary": 4,
+    "supporting": 1,
+    "decorative": 1
+  },
+  "defect_label_counts": {
+    "preserved": 1,
+    "transformed": 2,
+    "ignored": 1,
+    "none": 2
+  },
+  "pairwise_edge_agreement": 0.667,
+  "pairwise_comparisons": 3,
+  "edge_confusion_matrix": {
+    "necessary": {
+      "necessary": 2,
+      "supporting": 0,
+      "decorative": 0
+    },
+    "supporting": {
+      "necessary": 0,
+      "supporting": 0,
+      "decorative": 1
+    },
+    "decorative": {
+      "necessary": 0,
+      "supporting": 0,
+      "decorative": 0
+    }
+  },
+  "disagreements": [
+    "elevator-direction"
+  ],
+  "edges": [
+    {
+      "edge_id": "elevator-direction",
+      "edge_labels": [
+        "supporting",
+        "decorative"
+      ],
+      "defect_labels": [
+        "preserved",
+        "ignored"
+      ],
+      "edge_consensus": "DISAGREEMENT",
+      "defect_consensus": "DISAGREEMENT",
+      "mean_edge_score": 0.5
+    },
+    {
+      "edge_id": "receipt-length",
+      "edge_labels": [
+        "necessary",
+        "necessary"
+      ],
+      "defect_labels": [
+        "transformed",
+        "transformed"
+      ],
+      "edge_consensus": "necessary",
+      "defect_consensus": "transformed",
+      "mean_edge_score": 2
+    },
+    {
+      "edge_id": "calendar-capacity",
+      "edge_labels": [
+        "necessary",
+        "necessary"
+      ],
+      "defect_labels": [
+        "none",
+        "none"
+      ],
+      "edge_consensus": "necessary",
+      "defect_consensus": "none",
+      "mean_edge_score": 2
+    }
+  ],
+  "claim_boundary": "Independent labels measure reviewer agreement on frozen evidence; they do not prove causal lineage or prose quality."
+}
