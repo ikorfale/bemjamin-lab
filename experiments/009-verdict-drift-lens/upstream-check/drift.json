@@ -1,0 +1,365 @@
+{
+  "schema": "verdict-drift/v1",
+  "provenance": {
+    "target": "smirnovegorv/reproducible-claim-record",
+    "baseline_ref": "v0.3.0",
+    "candidate_ref": "0d80318864710c13785be7120b339c0cdce31241"
+  },
+  "summary": {
+    "added": 0,
+    "removed": 0,
+    "expectation_changed": 0,
+    "record_only_changed": 0,
+    "malformed": 0,
+    "unchanged": 113
+  },
+  "changes": {
+    "added": [],
+    "removed": [],
+    "expectation_changed": [],
+    "record_only_changed": [],
+    "malformed": [],
+    "unchanged": [
+      {
+        "case_id": "err_act_public_relay_without_block"
+      },
+      {
+        "case_id": "err_act_remedy_proposal_without_block"
+      },
+      {
+        "case_id": "err_act_scoped_relay_without_block"
+      },
+      {
+        "case_id": "err_affected_unknown_one_line"
+      },
+      {
+        "case_id": "err_attach_in_0_3"
+      },
+      {
+        "case_id": "err_bad_enum_act"
+      },
+      {
+        "case_id": "err_bad_enum_binding"
+      },
+      {
+        "case_id": "err_bad_enum_disclosure"
+      },
+      {
+        "case_id": "err_bad_enum_finding"
+      },
+      {
+        "case_id": "err_bad_enum_reversibility"
+      },
+      {
+        "case_id": "err_bad_enum_role"
+      },
+      {
+        "case_id": "err_bad_enum_run"
+      },
+      {
+        "case_id": "err_bad_prefix"
+      },
+      {
+        "case_id": "err_bad_target_no_revision"
+      },
+      {
+        "case_id": "err_bad_target_short_revision"
+      },
+      {
+        "case_id": "err_claim_bad_reopen"
+      },
+      {
+        "case_id": "err_claim_reopen_missing"
+      },
+      {
+        "case_id": "err_code_and_chain_in_witness"
+      },
+      {
+        "case_id": "err_code_backtick_in_witness"
+      },
+      {
+        "case_id": "err_code_fence_in_witness"
+      },
+      {
+        "case_id": "err_code_in_from"
+      },
+      {
+        "case_id": "err_code_in_receipt_remedy"
+      },
+      {
+        "case_id": "err_code_or_chain_in_witness"
+      },
+      {
+        "case_id": "err_code_quoted_command_line_in_witness"
+      },
+      {
+        "case_id": "err_code_shebang_line_in_witness"
+      },
+      {
+        "case_id": "err_code_shell_prompt_line_in_witness"
+      },
+      {
+        "case_id": "err_code_substitution_in_witness"
+      },
+      {
+        "case_id": "err_duplicate_label"
+      },
+      {
+        "case_id": "err_empty"
+      },
+      {
+        "case_id": "err_finding_with_act_label"
+      },
+      {
+        "case_id": "err_finding_with_role_label"
+      },
+      {
+        "case_id": "err_inconclusive_without_reopen_when"
+      },
+      {
+        "case_id": "err_legacy_unlabelled_attachment"
+      },
+      {
+        "case_id": "err_missing_claim"
+      },
+      {
+        "case_id": "err_missing_finding"
+      },
+      {
+        "case_id": "err_missing_handoff"
+      },
+      {
+        "case_id": "err_missing_receipt"
+      },
+      {
+        "case_id": "err_no_header"
+      },
+      {
+        "case_id": "err_one_sided_falsifier"
+      },
+      {
+        "case_id": "err_orphan_line"
+      },
+      {
+        "case_id": "err_receipt_0_3_without_from_role"
+      },
+      {
+        "case_id": "err_receipt_no_id"
+      },
+      {
+        "case_id": "err_remedy_without_reopen_when"
+      },
+      {
+        "case_id": "err_reopen_when_is_a_date"
+      },
+      {
+        "case_id": "err_reopen_when_is_a_delay"
+      },
+      {
+        "case_id": "err_reproducer_with_remedy"
+      },
+      {
+        "case_id": "err_reproducer_with_rework"
+      },
+      {
+        "case_id": "err_too_large"
+      },
+      {
+        "case_id": "err_unbound_remedy"
+      },
+      {
+        "case_id": "err_unknown_kind"
+      },
+      {
+        "case_id": "err_unknown_label"
+      },
+      {
+        "case_id": "err_unknown_version"
+      },
+      {
+        "case_id": "err_unlabelled_line"
+      },
+      {
+        "case_id": "err_url_in_binding"
+      },
+      {
+        "case_id": "err_url_in_claim"
+      },
+      {
+        "case_id": "err_url_in_holds"
+      },
+      {
+        "case_id": "err_url_in_id"
+      },
+      {
+        "case_id": "err_url_in_run"
+      },
+      {
+        "case_id": "err_url_in_supersedes"
+      },
+      {
+        "case_id": "err_url_in_witness"
+      },
+      {
+        "case_id": "err_url_www_in_next"
+      },
+      {
+        "case_id": "err_witness_missing"
+      },
+      {
+        "case_id": "flag_author_reported_only"
+      },
+      {
+        "case_id": "flag_demands_execution"
+      },
+      {
+        "case_id": "flag_origin_url_only"
+      },
+      {
+        "case_id": "flag_replacement_value"
+      },
+      {
+        "case_id": "ok_claim_reopen_every"
+      },
+      {
+        "case_id": "ok_claim_reopen_on_via"
+      },
+      {
+        "case_id": "ok_enum_trailing_punctuation"
+      },
+      {
+        "case_id": "ok_finding"
+      },
+      {
+        "case_id": "ok_finding_text_review_with_origin_link"
+      },
+      {
+        "case_id": "ok_finding_trust_required_without_witness"
+      },
+      {
+        "case_id": "ok_handoff"
+      },
+      {
+        "case_id": "ok_legacy_0_2_finding_with_attach"
+      },
+      {
+        "case_id": "ok_legacy_attach_may_hold_code"
+      },
+      {
+        "case_id": "ok_legacy_link_in_attach"
+      },
+      {
+        "case_id": "ok_near_miss_identifiers_and_paths_are_not_code"
+      },
+      {
+        "case_id": "ok_near_miss_link_in_from"
+      },
+      {
+        "case_id": "ok_near_miss_link_in_owner"
+      },
+      {
+        "case_id": "ok_near_miss_link_in_receipt"
+      },
+      {
+        "case_id": "ok_receipt_0_1_without_from_role"
+      },
+      {
+        "case_id": "ok_receipt_act_inform_operator"
+      },
+      {
+        "case_id": "ok_receipt_act_keep_local"
+      },
+      {
+        "case_id": "ok_receipt_act_public_relay_with_block"
+      },
+      {
+        "case_id": "ok_receipt_affected_unknown_with_search"
+      },
+      {
+        "case_id": "ok_receipt_owner_with_remedy"
+      },
+      {
+        "case_id": "ok_receipt_remedy_at_version"
+      },
+      {
+        "case_id": "ok_receipt_remedy_config_snapshot"
+      },
+      {
+        "case_id": "ok_receipt_reproduced_without_remedy_no_reopen_when"
+      },
+      {
+        "case_id": "ok_receipt_reproducer"
+      },
+      {
+        "case_id": "ok_receipt_reproducer_verified_by_reading"
+      },
+      {
+        "case_id": "ok_target_revision_digest"
+      },
+      {
+        "case_id": "ok_target_revision_snapshot_mark"
+      },
+      {
+        "case_id": "ok_target_revision_version_tag"
+      },
+      {
+        "case_id": "pair_absent_reachable_asked_legal"
+      },
+      {
+        "case_id": "pair_absent_reachable_not_asked_illegal"
+      },
+      {
+        "case_id": "pair_absent_unreachable_legal"
+      },
+      {
+        "case_id": "pair_absent_unreachable_not_observed_illegal"
+      },
+      {
+        "case_id": "pair_complete_not_observed_legal"
+      },
+      {
+        "case_id": "pair_complete_reproduced_legal"
+      },
+      {
+        "case_id": "pair_incomplete_inconclusive_legal"
+      },
+      {
+        "case_id": "pair_incomplete_not_observed_illegal"
+      },
+      {
+        "case_id": "pair_incomplete_reproduced_illegal"
+      },
+      {
+        "case_id": "pair_invalid_inconclusive_legal"
+      },
+      {
+        "case_id": "pair_invalid_not_observed_illegal"
+      },
+      {
+        "case_id": "pair_invalid_unassessed_illegal"
+      },
+      {
+        "case_id": "pair_not_observed_without_controls_illegal"
+      },
+      {
+        "case_id": "pair_not_observed_without_env_illegal"
+      },
+      {
+        "case_id": "pair_not_started_reproduced_illegal"
+      },
+      {
+        "case_id": "pair_not_started_unassessed_legal"
+      },
+      {
+        "case_id": "pair_not_started_unsafe_legal"
+      },
+      {
+        "case_id": "pair_older_reproduced_illegal"
+      },
+      {
+        "case_id": "pair_older_unassessed_legal"
+      }
+    ]
+  },
+  "claim_boundary": "Compares corpus bytes and expected JSON only; it does not execute records, run a checker, authenticate refs, or prove a specification correct."
+}

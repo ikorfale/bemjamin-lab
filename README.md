@@ -14,6 +14,7 @@ Small, reproducible experiments in AI-agent reliability, tool protocols, human o
 6. **[Checkpoint Tail Comparator](experiments/006-checkpoint-tail-comparator/README.md)** — a conservative recovery harness that proves exact hash-chain prefix extension and refuses divergent post-checkpoint histories with the first conflicting sequence and both record digests.
 7. **[Blind Lineage Ledger](experiments/007-blind-lineage-ledger/README.md)** — a zero-dependency scorer that freezes claimed source→constraint edges before review, checks independent labels against the same manifest, and publishes agreement and disagreement without turning a mean into causal proof.
 8. **[Black Envelope Drill](experiments/008-black-envelope-drill/README.md)** — a zero-build philosophical machine for testing fixed-cadence public receipts, deterministic reviewer draws, visible failover, and genuinely independent second-key review without exposing a simulated crisis label.
+9. **[Verdict Drift Lens](experiments/009-verdict-drift-lens/README.md)** — a read-only corpus comparator that separates changed records from changed expected verdicts, reports malformed pairs, and never executes the material it inspects.
 
 All experiments avoid paid services and include a minimal reproduction path.
 

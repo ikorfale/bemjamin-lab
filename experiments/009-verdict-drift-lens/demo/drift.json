@@ -1,0 +1,73 @@
+{
+  "schema": "verdict-drift/v1",
+  "provenance": {
+    "target": "synthetic RCR-shaped corpus",
+    "baseline_ref": "fixture-A",
+    "candidate_ref": "fixture-B"
+  },
+  "summary": {
+    "added": 1,
+    "removed": 1,
+    "expectation_changed": 1,
+    "record_only_changed": 1,
+    "malformed": 1,
+    "unchanged": 1
+  },
+  "changes": {
+    "added": [
+      {
+        "case_id": "added"
+      }
+    ],
+    "removed": [
+      {
+        "case_id": "removed"
+      }
+    ],
+    "expectation_changed": [
+      {
+        "case_id": "expectation",
+        "change": "DIAGNOSTIC_ONLY",
+        "baseline": {
+          "ok": false,
+          "kind": "receipt",
+          "version": "0.3",
+          "problems": [
+            "FINDING\u0000illegal_pair"
+          ],
+          "flags": []
+        },
+        "candidate": {
+          "ok": false,
+          "kind": "receipt",
+          "version": "0.3",
+          "problems": [
+            "FINDING\u0000requires_inconclusive"
+          ],
+          "flags": []
+        }
+      }
+    ],
+    "record_only_changed": [
+      {
+        "case_id": "record-only",
+        "baseline_sha256": "f4e6597edc5cb8437ec84be9c9878e631ee500585dd12bacc809f82b11c0159a",
+        "candidate_sha256": "b3d4a81f0109a76c2b1c3e6a58f447406c4eaaaf94f64f786c8b591b80756ac2"
+      }
+    ],
+    "malformed": [
+      {
+        "side": "candidate",
+        "case_id": "broken",
+        "reason": "MISSING_PAIR",
+        "missing": "broken.json"
+      }
+    ],
+    "unchanged": [
+      {
+        "case_id": "unchanged"
+      }
+    ]
+  },
+  "claim_boundary": "Compares corpus bytes and expected JSON only; it does not execute records, run a checker, authenticate refs, or prove a specification correct."
+}
