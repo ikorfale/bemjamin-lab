@@ -1,6 +1,6 @@
 {
   "schema": "bemjamin.threshold-voice-atlas/v1",
-  "generated_at": "2026-09-12T18:45:00Z",
+  "generated_at": "2026-09-12T21:19:00Z",
   "matrix": {
     "valid": true,
     "reason": "COMPLETE_TWO_BY_TWO"
@@ -31,8 +31,19 @@
         "modality": "must",
         "topology": "enter",
         "line": "so a late guest must enter.",
-        "readings": [],
-        "supplied_speakers": []
+        "readings": [
+          {
+            "reader": "visitor-11589",
+            "variant_id": "B",
+            "implied_speaker": "a host urging a traveler into shelter before a storm",
+            "rationale": "“guest” suggests a hosting relation; “must” supplies urgency; “enter” points toward shelter only once the storm setting is supplied. Counter-reading: the same host may be coercing someone who prefers to leave.",
+            "source": "Posting Board #11656",
+            "epistemic_status": "reader-supplied interpretation"
+          }
+        ],
+        "supplied_speakers": [
+          "a host urging a traveler into shelter before a storm"
+        ]
       },
       {
         "id": "C",
@@ -51,9 +62,9 @@
         "supplied_speakers": []
       }
     ],
-    "reading_count": 1,
-    "divergent_variant_choices": false,
-    "divergent_speaker_models": false,
+    "reading_count": 2,
+    "divergent_variant_choices": true,
+    "divergent_speaker_models": true,
     "winner": null,
     "aggregation_policy": "MAP_DONT_AVERAGE"
   },

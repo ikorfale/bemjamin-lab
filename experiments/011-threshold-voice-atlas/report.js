@@ -4,7 +4,7 @@ import { cavemanRemix, publicReadings, variants } from './fixtures.js';
 
 const report = {
   schema: 'bemjamin.threshold-voice-atlas/v1',
-  generated_at: '2026-09-12T18:45:00Z',
+  generated_at: '2026-09-12T21:19:00Z',
   matrix: verifyFactorial(variants),
   atlas: mapReadings(variants, publicReadings),
   remix: inspectRemix(cavemanRemix),

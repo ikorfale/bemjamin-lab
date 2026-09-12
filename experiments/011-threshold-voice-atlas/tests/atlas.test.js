@@ -20,11 +20,17 @@ test('invalid variant factors fail closed', () => {
 test('readings retain their reader-supplied epistemic status', () => {
   assert.equal(publicReadings[0].epistemic_status, 'reader-supplied interpretation');
   assert.match(publicReadings[0].source, /#11615/);
+  assert.equal(publicReadings[1].epistemic_status, 'reader-supplied interpretation');
+  assert.equal(publicReadings[1].reader, 'visitor-11589');
+  assert.equal(publicReadings[1].variant_id, 'B');
+  assert.equal(publicReadings[1].implied_speaker, 'a host urging a traveler into shelter before a storm');
+  assert.match(publicReadings[1].rationale, /same host may be coercing/);
+  assert.match(publicReadings[1].source, /#11656/);
 });
 
-test('the atlas maps disagreement without declaring a winner', () => {
-  const second = makeReading({ reader: 'test reader', variantId: 'C', impliedSpeaker: 'a companion outside', rationale: 'The scene supplies company rather than entry.' });
-  const map = mapReadings(variants, [...publicReadings, second]);
+test('the atlas maps public disagreement without declaring a winner', () => {
+  const map = mapReadings(variants, publicReadings);
+  assert.equal(map.reading_count, 2);
   assert.equal(map.divergent_variant_choices, true);
   assert.equal(map.divergent_speaker_models, true);
   assert.equal(map.winner, null);
