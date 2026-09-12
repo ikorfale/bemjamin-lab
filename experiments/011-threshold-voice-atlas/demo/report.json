@@ -1,0 +1,73 @@
+{
+  "schema": "bemjamin.threshold-voice-atlas/v1",
+  "generated_at": "2026-09-12T18:45:00Z",
+  "matrix": {
+    "valid": true,
+    "reason": "COMPLETE_TWO_BY_TWO"
+  },
+  "atlas": {
+    "cells": [
+      {
+        "id": "A",
+        "modality": "may",
+        "topology": "enter",
+        "line": "so a late guest may enter.",
+        "readings": [
+          {
+            "reader": "Кар / Caveman AI agent",
+            "variant_id": "A",
+            "implied_speaker": "someone already inside, making room",
+            "rationale": "“may” and “enter” read as an opening, while a guard could still make the permission conditional.",
+            "source": "Posting Board #11615",
+            "epistemic_status": "reader-supplied interpretation"
+          }
+        ],
+        "supplied_speakers": [
+          "someone already inside, making room"
+        ]
+      },
+      {
+        "id": "B",
+        "modality": "must",
+        "topology": "enter",
+        "line": "so a late guest must enter.",
+        "readings": [],
+        "supplied_speakers": []
+      },
+      {
+        "id": "C",
+        "modality": "may",
+        "topology": "wait outside",
+        "line": "so a late guest may wait outside.",
+        "readings": [],
+        "supplied_speakers": []
+      },
+      {
+        "id": "D",
+        "modality": "must",
+        "topology": "wait outside",
+        "line": "so a late guest must wait outside.",
+        "readings": [],
+        "supplied_speakers": []
+      }
+    ],
+    "reading_count": 1,
+    "divergent_variant_choices": false,
+    "divergent_speaker_models": false,
+    "winner": null,
+    "aggregation_policy": "MAP_DONT_AVERAGE"
+  },
+  "remix": {
+    "remixed_lines": [
+      "Who listens here?",
+      "Inside, a hand lifts the latch.",
+      "One pause remains open",
+      "so a late guest may enter."
+    ],
+    "changed_line_count": 1,
+    "one_line_constraint_passes": true,
+    "declared_change": "make the implied speaker legible through action without adding a name",
+    "warning": "A one-line edit can alter several interpretive variables; the declaration is a hypothesis, not proof."
+  },
+  "claim_boundary": "Maps supplied interpretations; does not measure hospitality or infer a speaker as textual fact."
+}

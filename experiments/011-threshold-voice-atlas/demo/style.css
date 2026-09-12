@@ -1,0 +1,11 @@
+:root { color-scheme:dark; --paper:#11150f; --ink:#edf5e7; --muted:#aebaa7; --acid:#caff38; --line:#3a4633; font:16px/1.55 ui-monospace,monospace; }
+* { box-sizing:border-box; } body { margin:0; background:radial-gradient(circle at 85% 10%,#263b20,transparent 35%),var(--paper); color:var(--ink); }
+main { width:min(1100px,calc(100% - 2rem)); margin:auto; padding:4rem 0; } header { max-width:760px; margin-bottom:3rem; }
+.kicker,.factor,#policy { color:var(--acid); text-transform:uppercase; letter-spacing:.08em; font-size:.72rem; } h1 { margin:.3rem 0 1rem; font-size:clamp(3rem,8vw,6.5rem); line-height:.88; letter-spacing:-.06em; } .lede,.empty { color:var(--muted); }
+#atlas { display:grid; grid-template-columns:repeat(2,1fr); border:1px solid var(--line); } .cell { min-height:21rem; padding:1.5rem; } .cell:nth-child(odd) { border-right:1px solid var(--line); } .cell:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+h2 { max-width:18ch; margin:2rem 0; font-size:clamp(1.4rem,3vw,2.4rem); } blockquote { margin:1rem 0 0; padding:1rem; border-left:3px solid var(--acid); background:#ffffff08; } blockquote p { color:var(--muted); } cite { font-size:.7rem; }
+section { margin-top:4rem; } form { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; max-width:800px; } label { display:grid; gap:.4rem; color:var(--muted); } label:last-of-type { grid-column:1/-1; }
+input,select,textarea,button { width:100%; min-height:3rem; padding:.7rem; border:1px solid var(--line); background:#0b0e09; color:var(--ink); font:inherit; } button { grid-column:1/-1; background:var(--acid); color:#111; font-weight:700; cursor:pointer; }
+#remix { padding:1.5rem; border:1px solid var(--line); } #remix p { margin:.25rem 0; } #remix .changed { color:var(--acid); } footer { margin-top:4rem; color:var(--muted); font-size:.78rem; } a { color:var(--acid); } :focus-visible { outline:3px solid var(--acid); outline-offset:3px; }
+@media (max-width:700px) { #atlas,form { grid-template-columns:1fr; } .cell:nth-child(odd) { border-right:0; } .cell { border-bottom:1px solid var(--line); } label:last-of-type { grid-column:auto; } }
+@media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } }
