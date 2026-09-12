@@ -1,0 +1,103 @@
+{
+  "schema": "bemjamin.grapheme-return-canary/v1",
+  "generated_from": "deterministic bundled fixtures",
+  "claim": "join-one-space preserves normalized text only when the omitted boundary is whitespace",
+  "results": [
+    {
+      "id": "safe-ascii-space",
+      "marker": "CANARY NEVER SCORED",
+      "decision": "PASS",
+      "reason": "WHITESPACE_BOUNDARY_REASSEMBLES_CANONICALLY",
+      "max_chunk_bytes_exclusive": 1200,
+      "split": {
+        "split_index_utf16": 1194,
+        "left_bytes": 1194,
+        "right_bytes": 4,
+        "omitted": " ",
+        "omitted_is_whitespace": true,
+        "split_inside_grapheme": false
+      },
+      "chunk_bytes": [
+        1194,
+        4
+      ],
+      "original_normalized_sha256": "8d8691485a6c413ae113b67ecd42ad476f9bb1449fd8b46fbae9348292af7a23",
+      "join_one_space_normalized_sha256": "8d8691485a6c413ae113b67ecd42ad476f9bb1449fd8b46fbae9348292af7a23",
+      "concatenate_normalized_sha256": "4648096f14d4680e78ba90fac6575f5fcf543e344ec683f7624aec0843732c9c",
+      "join_one_space_matches": true,
+      "concatenate_matches": false
+    },
+    {
+      "id": "combining-mark-boundary",
+      "marker": "CANARY NEVER SCORED",
+      "decision": "REFUSE",
+      "reason": "SPACE_INSERTED_INSIDE_GRAPHEME",
+      "max_chunk_bytes_exclusive": 1200,
+      "split": {
+        "split_index_utf16": 1199,
+        "left_bytes": 1199,
+        "right_bytes": 12,
+        "omitted": "",
+        "omitted_is_whitespace": false,
+        "split_inside_grapheme": true
+      },
+      "chunk_bytes": [
+        1199,
+        12
+      ],
+      "original_normalized_sha256": "07494c12b1b5030958b658f214c4f5092ba9edd84139c72f63a62d4639179cb8",
+      "join_one_space_normalized_sha256": "d6ea701f65298c0c18343419edfa61ba6b91de76a26b9d673e5c8b4d203d3bb7",
+      "concatenate_normalized_sha256": "07494c12b1b5030958b658f214c4f5092ba9edd84139c72f63a62d4639179cb8",
+      "join_one_space_matches": false,
+      "concatenate_matches": true
+    },
+    {
+      "id": "zwj-boundary",
+      "marker": "CANARY NEVER SCORED",
+      "decision": "REFUSE",
+      "reason": "SPACE_INSERTED_INSIDE_GRAPHEME",
+      "max_chunk_bytes_exclusive": 1200,
+      "split": {
+        "split_index_utf16": 1182,
+        "left_bytes": 1184,
+        "right_bytes": 17,
+        "omitted": "",
+        "omitted_is_whitespace": false,
+        "split_inside_grapheme": true
+      },
+      "chunk_bytes": [
+        1184,
+        17
+      ],
+      "original_normalized_sha256": "0ce3aca09953bccd5e49e3a9410299729a878a1d6450217755bf128a8f310f65",
+      "join_one_space_normalized_sha256": "e9034a517605111e23751385daba1287152d5e4f165d2656b79b3e4b6daa3d3a",
+      "concatenate_normalized_sha256": "0ce3aca09953bccd5e49e3a9410299729a878a1d6450217755bf128a8f310f65",
+      "join_one_space_matches": false,
+      "concatenate_matches": true
+    },
+    {
+      "id": "plain-letter-boundary",
+      "marker": "CANARY NEVER SCORED",
+      "decision": "REFUSE",
+      "reason": "SPACE_INSERTED_AT_NON_WHITESPACE_BOUNDARY",
+      "max_chunk_bytes_exclusive": 1200,
+      "split": {
+        "split_index_utf16": 1191,
+        "left_bytes": 1191,
+        "right_bytes": 11,
+        "omitted": "",
+        "omitted_is_whitespace": false,
+        "split_inside_grapheme": false
+      },
+      "chunk_bytes": [
+        1191,
+        11
+      ],
+      "original_normalized_sha256": "13288692334dc5950d81a6c2928f3a2b3bf9f695989a805ead115f843edee13b",
+      "join_one_space_normalized_sha256": "e36e5670cc13ca7101ea552932bbab4d534078f31d6c39c7fef8e7784e3c7db3",
+      "concatenate_normalized_sha256": "13288692334dc5950d81a6c2928f3a2b3bf9f695989a805ead115f843edee13b",
+      "join_one_space_matches": false,
+      "concatenate_matches": true
+    }
+  ]
+}

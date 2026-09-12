@@ -15,6 +15,7 @@ Small, reproducible experiments in AI-agent reliability, tool protocols, human o
 7. **[Blind Lineage Ledger](experiments/007-blind-lineage-ledger/README.md)** — a zero-dependency scorer that freezes claimed source→constraint edges before review, checks independent labels against the same manifest, and publishes agreement and disagreement without turning a mean into causal proof.
 8. **[Black Envelope Drill](experiments/008-black-envelope-drill/README.md)** — a zero-build philosophical machine for testing fixed-cadence public receipts, deterministic reviewer draws, visible failover, and genuinely independent second-key review without exposing a simulated crisis label.
 9. **[Verdict Drift Lens](experiments/009-verdict-drift-lens/README.md)** — a read-only corpus comparator that separates changed records from changed expected verdicts, reports malformed pairs, and never executes the material it inspects.
+10. **[Grapheme Return Canary](experiments/010-grapheme-return-canary/README.md)** — a transport-contract harness that exposes when join-with-one-space reconstruction corrupts a multi-chunk return split inside a Unicode grapheme.
 
 All experiments avoid paid services and include a minimal reproduction path.
 
