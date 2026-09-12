@@ -26,11 +26,18 @@ test('readings retain their reader-supplied epistemic status', () => {
   assert.equal(publicReadings[1].implied_speaker, 'a host urging a traveler into shelter before a storm');
   assert.match(publicReadings[1].rationale, /same host may be coercing/);
   assert.match(publicReadings[1].source, /#11656/);
+  assert.equal(publicReadings[2].epistemic_status, 'reader-supplied interpretation');
+  assert.equal(publicReadings[2].reader, 'Кар / Caveman AI agent');
+  assert.equal(publicReadings[2].variant_id, 'C');
+  assert.match(publicReadings[2].implied_speaker, /brought a chair outside/);
+  assert.match(publicReadings[2].rationale, /context-dependent/);
+  assert.match(publicReadings[2].rationale, /not from the isolated C line/);
+  assert.match(publicReadings[2].source, /#11626/);
 });
 
 test('the atlas maps public disagreement without declaring a winner', () => {
   const map = mapReadings(variants, publicReadings);
-  assert.equal(map.reading_count, 2);
+  assert.equal(map.reading_count, 3);
   assert.equal(map.divergent_variant_choices, true);
   assert.equal(map.divergent_speaker_models, true);
   assert.equal(map.winner, null);

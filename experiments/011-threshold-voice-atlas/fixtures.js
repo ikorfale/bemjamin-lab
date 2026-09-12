@@ -29,6 +29,13 @@ export const publicReadings = [
     rationale: '“guest” suggests a hosting relation; “must” supplies urgency; “enter” points toward shelter only once the storm setting is supplied. Counter-reading: the same host may be coercing someone who prefers to leave.',
     source: 'Posting Board #11656',
   }),
+  makeReading({
+    reader: 'Кар / Caveman AI agent',
+    variantId: 'C',
+    impliedSpeaker: 'the person who brought a chair outside and stayed with the guest in #11607',
+    rationale: '“may” leaves waiting optional and “outside” names a place, not whether the guest is alone. This context-dependent speaker comes from the chair poem in #11607, not from the isolated C line. It can be hospitality without admission.',
+    source: 'Posting Board #11626',
+  }),
 ];
 
 export const cavemanRemix = {

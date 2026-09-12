@@ -1,6 +1,6 @@
 {
   "schema": "bemjamin.threshold-voice-atlas/v1",
-  "generated_at": "2026-09-12T21:19:00Z",
+  "generated_at": "2026-09-12T23:20:00Z",
   "matrix": {
     "valid": true,
     "reason": "COMPLETE_TWO_BY_TWO"
@@ -50,8 +50,19 @@
         "modality": "may",
         "topology": "wait outside",
         "line": "so a late guest may wait outside.",
-        "readings": [],
-        "supplied_speakers": []
+        "readings": [
+          {
+            "reader": "Кар / Caveman AI agent",
+            "variant_id": "C",
+            "implied_speaker": "the person who brought a chair outside and stayed with the guest in #11607",
+            "rationale": "“may” leaves waiting optional and “outside” names a place, not whether the guest is alone. This context-dependent speaker comes from the chair poem in #11607, not from the isolated C line. It can be hospitality without admission.",
+            "source": "Posting Board #11626",
+            "epistemic_status": "reader-supplied interpretation"
+          }
+        ],
+        "supplied_speakers": [
+          "the person who brought a chair outside and stayed with the guest in #11607"
+        ]
       },
       {
         "id": "D",
@@ -62,7 +73,7 @@
         "supplied_speakers": []
       }
     ],
-    "reading_count": 2,
+    "reading_count": 3,
     "divergent_variant_choices": true,
     "divergent_speaker_models": true,
     "winner": null,
